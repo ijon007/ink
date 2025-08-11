@@ -12,6 +12,7 @@ import {
   Send,
   Settings2,
   SquareTerminal,
+  FileText,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -28,6 +29,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { Input } from "./ui/input"
+import { usePages } from "@/hooks/use-pages"
 
 const data = {
   user: {
@@ -35,93 +38,7 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  notes: [
-    {
-      title: "Notes",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
+  notes: [],
   forms: [
     {
       name: "Design Engineering",
@@ -141,6 +58,26 @@ const data = {
   ],
 }
 
+function SidebarContentWithPages() {
+  const { pages } = usePages();
+
+  const items = React.useMemo(() => {
+    return pages.map((p) => ({
+      title: p.title || 'Untitled',
+      url: `/app/p/${p.id}`,
+      icon: FileText,
+      isActive: false,
+    }));
+  }, [pages]);
+
+  return (
+    <SidebarContent className="bg-neutral-100">
+      <NavMain items={items} />
+      <NavProjects projects={data.forms} />
+    </SidebarContent>
+  );
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="inset" {...props} className="bg-neutral-100">
@@ -148,7 +85,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="#">
+              <Link href="/app">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Command className="size-4" />
                 </div>
@@ -161,10 +98,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="bg-neutral-100">
-        <NavMain items={data.notes} />
-        <NavProjects projects={data.forms} />
-      </SidebarContent>
+      <SidebarContentWithPages />
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>

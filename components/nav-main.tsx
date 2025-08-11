@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight, Plus, type LucideIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -18,9 +18,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Button } from "./ui/button"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { usePages } from "@/hooks/use-pages"
 
 export function NavMain({
   items,
+  onAdd,
 }: {
   items: {
     title: string
@@ -32,19 +37,36 @@ export function NavMain({
       url: string
     }[]
   }[]
+  onAdd?: () => void
 }) {
+  const router = useRouter()
+  const { createPage } = usePages()
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Notes</SidebarGroupLabel>
+      <SidebarGroupLabel className="flex items-center justify-between w-full px-1">
+        <span>Notes</span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-6 rounded-md hover:bg-neutral-200/50 transition-all duration-300"
+          onClick={() => {
+            const page = createPage()
+            router.push(`/app/p/${page.id}`)
+            onAdd?.()
+          }}
+        >
+          <Plus className="size-4"/>
+        </Button>
+      </SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <a href={item.url}>
+              <SidebarMenuButton asChild tooltip={item.title} className="rounded-md hover:bg-neutral-200/50 transition-all duration-300">
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               {item.items?.length ? (
                 <>
@@ -58,10 +80,10 @@ export function NavMain({
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
+                          <SidebarMenuSubButton asChild >
+                            <Link href={subItem.url}>
                               <span>{subItem.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
