@@ -6,8 +6,8 @@ import { type TPlateEditor, useEditorRef } from 'platejs/react';
 import { AlignKit } from '@/components/plate/align-kit';
 import { AutoformatKit } from '@/components/plate/autoformat-kit';
 import { BasicBlocksKit } from '@/components/plate/basic-blocks-kit';
-// import { BasicMarksKit } from '@/components/basic-marks-kit';
-// import { BlockMenuKit } from '@/components/block-menu-kit';
+import { BaseBasicMarksKit } from '@/components/plate/basic-marks-base-kit';
+// import { BlockMenuKit } from '@/components/plate/block-menu-kit';
 // import { CalloutKit } from '@/components/callout-kit';
 import { CodeBlockKit } from '@/components/plate/code-block-kit';
 import { ColumnKit } from '@/components/plate/column-kit';
@@ -28,6 +28,7 @@ import { MentionKit } from '@/components/plate/mention-kit';
 import { SlashKit } from '@/components/plate/slash-kit';
 import { TableKit } from '@/components/plate/table-kit';
 import { ToggleKit } from '@/components/plate/toggle-kit';
+import { SuggestionKit } from '@/components/plate/suggestion-kit';
 
 export const EditorKit = [
   // Elements
@@ -45,7 +46,7 @@ export const EditorKit = [
   ...MentionKit,
 
   // Marks
-//   ...BaseBasicMarksKit,
+  ...BaseBasicMarksKit,
   ...FontKit,
 
   // Block Style
@@ -55,6 +56,7 @@ export const EditorKit = [
 
   // Editing
   ...SlashKit,
+  ...SuggestionKit,
   ...AutoformatKit,
   ...CursorOverlayKit,
   // ...BlockMenuKit,
