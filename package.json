@@ -117,6 +117,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.1.2",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,15 +1,11 @@
 'use client';
 
-import * as React from 'react';
-
-import type { Point, TElement } from 'platejs';
-
 import {
-  type ComboboxItemProps,
   Combobox,
   ComboboxGroup,
   ComboboxGroupLabel,
   ComboboxItem,
+  type ComboboxItemProps,
   ComboboxPopover,
   ComboboxProvider,
   ComboboxRow,
@@ -24,7 +20,9 @@ import {
   useHTMLInputCursorState,
 } from '@platejs/combobox/react';
 import { cva } from 'class-variance-authority';
+import type { Point, TElement } from 'platejs';
 import { useComposedRef, useEditorRef } from 'platejs/react';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -228,20 +226,20 @@ const InlineComboboxInput = React.forwardRef<
 
       <span className="relative min-h-[1lh]">
         <span
-          className="invisible overflow-hidden text-nowrap"
           aria-hidden="true"
+          className="invisible overflow-hidden text-nowrap"
         >
           {value || '\u200B'}
         </span>
 
         <Combobox
-          ref={ref}
+          autoSelect
           className={cn(
             'absolute top-0 left-0 size-full bg-transparent outline-none',
             className
           )}
+          ref={ref}
           value={value}
-          autoSelect
           {...inputProps}
           {...props}
         />
@@ -271,7 +269,7 @@ const InlineComboboxContent: typeof ComboboxPopover = ({
 };
 
 const comboboxItemVariants = cva(
-  'relative mx-1 flex h-[28px] items-center rounded-sm px-2 text-sm text-foreground outline-none select-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'relative mx-1 flex h-[28px] select-none items-center rounded-sm px-2 text-foreground text-sm outline-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     defaultVariants: {
       interactive: true,
@@ -366,7 +364,7 @@ function InlineComboboxGroup({
     <ComboboxGroup
       {...props}
       className={cn(
-        'hidden py-1.5 not-last:border-b [&:has([role=option])]:block',
+        'hidden not-last:border-b py-1.5 [&:has([role=option])]:block',
         className
       )}
     />
@@ -381,7 +379,7 @@ function InlineComboboxGroupLabel({
     <ComboboxGroupLabel
       {...props}
       className={cn(
-        'mt-1.5 mb-2 px-3 text-xs font-medium text-muted-foreground',
+        'mt-1.5 mb-2 px-3 font-medium text-muted-foreground text-xs',
         className
       )}
     />

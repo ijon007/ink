@@ -1,13 +1,13 @@
+'use client';
 
-"use client"
-
-import { ChevronRight, Plus, type LucideIcon } from "lucide-react"
-
+import { ChevronRight, type LucideIcon, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from '@/components/ui/collapsible';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -18,41 +18,43 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+} from '@/components/ui/sidebar';
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+    }[];
+  }[];
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="flex items-center justify-between w-full px-1">
+      <SidebarGroupLabel className="flex w-full items-center justify-between px-1">
         <span>Notes</span>
         <Button
-          variant="ghost"
+          className="size-6 rounded-md transition-all duration-300 hover:bg-neutral-200/50"
           size="icon"
-          className="size-6 rounded-md hover:bg-neutral-200/50 transition-all duration-300"
+          variant="ghost"
         >
-          <Plus className="size-4"/>
+          <Plus className="size-4" />
         </Button>
       </SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
+          <Collapsible asChild defaultOpen={item.isActive} key={item.title}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title} className="rounded-md hover:bg-neutral-200/50 transition-all duration-300">
+              <SidebarMenuButton
+                asChild
+                className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
+                tooltip={item.title}
+              >
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
@@ -70,7 +72,7 @@ export function NavMain({
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild >
+                          <SidebarMenuSubButton asChild>
                             <Link href={subItem.url}>
                               <span>{subItem.title}</span>
                             </Link>
@@ -86,5 +88,5 @@ export function NavMain({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

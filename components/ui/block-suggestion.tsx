@@ -1,9 +1,6 @@
 'use client';
 
-import * as React from 'react';
-
 import type { TResolvedSuggestion } from '@platejs/suggestion';
-
 import {
   acceptSuggestion,
   getSuggestionKey,
@@ -13,32 +10,32 @@ import {
 import { SuggestionPlugin } from '@platejs/suggestion/react';
 import { CheckIcon, XIcon } from 'lucide-react';
 import {
-  type NodeEntry,
-  type Path,
-  type TElement,
-  type TSuggestionElement,
-  type TSuggestionText,
   ElementApi,
   KEYS,
+  type NodeEntry,
+  type Path,
   PathApi,
+  type TElement,
   TextApi,
+  type TSuggestionElement,
+  type TSuggestionText,
 } from 'platejs';
 import { useEditorPlugin, usePluginOption } from 'platejs/react';
-
+import * as React from 'react';
+import {
+  discussionPlugin,
+  type TDiscussion,
+} from '@/components/discussion-kit';
+import { suggestionPlugin } from '@/components/suggestion-kit';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import {
-  type TDiscussion,
-  discussionPlugin,
-} from '@/components/discussion-kit';
-import { suggestionPlugin } from '@/components/suggestion-kit';
 
 import {
-  type TComment,
   Comment,
   CommentCreateForm,
   formatCommentDate,
+  type TComment,
 } from './comment';
 
 export interface ResolvedSuggestion extends TResolvedSuggestion {
@@ -55,12 +52,12 @@ const TYPE_TEXT_MAP: Record<string, (node?: TElement) => string> = {
   [KEYS.column]: () => 'Column',
   [KEYS.equation]: () => 'Equation',
   [KEYS.file]: () => 'File',
-  [KEYS.h1]: () => `Heading 1`,
-  [KEYS.h2]: () => `Heading 2`,
-  [KEYS.h3]: () => `Heading 3`,
-  [KEYS.h4]: () => `Heading 4`,
-  [KEYS.h5]: () => `Heading 5`,
-  [KEYS.h6]: () => `Heading 6`,
+  [KEYS.h1]: () => 'Heading 1',
+  [KEYS.h2]: () => 'Heading 2',
+  [KEYS.h3]: () => 'Heading 3',
+  [KEYS.h4]: () => 'Heading 4',
+  [KEYS.h5]: () => 'Heading 5',
+  [KEYS.h6]: () => 'Heading 6',
   [KEYS.hr]: () => 'Horizontal Rule',
   [KEYS.img]: () => 'Image',
   [KEYS.mediaEmbed]: () => 'Media',
@@ -132,8 +129,8 @@ export function BlockSuggestionCard({
 
   return (
     <div
-      key={`${suggestion.suggestionId}-${idx}`}
       className="relative"
+      key={`${suggestion.suggestionId}-${idx}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
@@ -144,10 +141,10 @@ export function BlockSuggestionCard({
             <AvatarImage alt={userInfo?.name} src={userInfo?.avatarUrl} />
             <AvatarFallback>{userInfo?.name?.[0]}</AvatarFallback>
           </Avatar>
-          <h4 className="mx-2 text-sm leading-none font-semibold">
+          <h4 className="mx-2 font-semibold text-sm leading-none">
             {userInfo?.name}
           </h4>
-          <div className="text-xs leading-none text-muted-foreground/80">
+          <div className="text-muted-foreground/80 text-xs leading-none">
             <span className="mr-1">
               {formatCommentDate(new Date(suggestion.createdAt))}
             </span>
@@ -159,12 +156,12 @@ export function BlockSuggestionCard({
             {suggestion.type === 'remove' && (
               <React.Fragment>
                 {suggestionText2Array(suggestion.text!).map((text, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2" key={index}>
+                    <span className="text-muted-foreground text-sm">
                       Delete:
                     </span>
 
-                    <span key={index} className="text-sm">
+                    <span className="text-sm" key={index}>
                       {text}
                     </span>
                   </div>
@@ -176,12 +173,12 @@ export function BlockSuggestionCard({
               <React.Fragment>
                 {suggestionText2Array(suggestion.newText!).map(
                   (text, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2" key={index}>
+                      <span className="text-muted-foreground text-sm">
                         Add:
                       </span>
 
-                      <span key={index} className="text-sm">
+                      <span className="text-sm" key={index}>
                         {text || 'line breaks'}
                       </span>
                     </div>
@@ -196,8 +193,8 @@ export function BlockSuggestionCard({
                   (text, index) => (
                     <React.Fragment key={index}>
                       <div
-                        key={index}
                         className="flex items-start gap-2 text-brand/80"
+                        key={index}
                       >
                         <span className="text-sm">with:</span>
                         <span className="text-sm">{text || 'line breaks'}</span>
@@ -208,8 +205,8 @@ export function BlockSuggestionCard({
 
                 {suggestionText2Array(suggestion.text!).map((text, index) => (
                   <React.Fragment key={index}>
-                    <div key={index} className="flex items-start gap-2">
-                      <span className="text-sm text-muted-foreground">
+                    <div className="flex items-start gap-2" key={index}>
+                      <span className="text-muted-foreground text-sm">
                         {index === 0 ? 'Replace:' : 'Delete:'}
                       </span>
                       <span className="text-sm">{text || 'line breaks'}</span>
@@ -221,7 +218,7 @@ export function BlockSuggestionCard({
 
             {suggestion.type === 'update' && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-muted-foreground text-sm">
                   {Object.keys(suggestion.properties).map((key) => (
                     <span key={key}>Un{key}</span>
                   ))}
@@ -240,12 +237,12 @@ export function BlockSuggestionCard({
 
         {suggestion.comments.map((comment, index) => (
           <Comment
-            key={comment.id ?? index}
             comment={comment}
             discussionLength={suggestion.comments.length}
             documentContent="__suggestion__"
             editingId={editingId}
             index={index}
+            key={comment.id ?? index}
             setEditingId={setEditingId}
           />
         ))}
@@ -253,17 +250,17 @@ export function BlockSuggestionCard({
         {hovering && (
           <div className="absolute top-4 right-4 flex gap-2">
             <Button
-              variant="ghost"
               className="size-6 p-1 text-muted-foreground"
               onClick={() => accept(suggestion)}
+              variant="ghost"
             >
               <CheckIcon className="size-4" />
             </Button>
 
             <Button
-              variant="ghost"
               className="size-6 p-1 text-muted-foreground"
               onClick={() => reject(suggestion)}
+              variant="ghost"
             >
               <XIcon className="size-4" />
             </Button>
@@ -348,7 +345,7 @@ export const useResolveSuggestion = (
 
       const path = map.get(id);
 
-      if (!path || !PathApi.isPath(path)) return;
+      if (!(path && PathApi.isPath(path))) return;
       if (!PathApi.equals(path, blockPath)) return;
 
       const entries = [

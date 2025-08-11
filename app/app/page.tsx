@@ -1,9 +1,7 @@
 import { PlateEditor } from '@/components/plate/plate-editor';
 
 function EditorPage() {
-  return (
-    <PlateEditor />
-  );
+  return <PlateEditor />;
 }
 
-export default EditorPage
+export default EditorPage;

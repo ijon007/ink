@@ -1,18 +1,16 @@
 'use client';
 
-import * as React from 'react';
+import { CornerDownLeftIcon } from 'lucide-react';
 
 import type { TSuggestionData, TSuggestionText } from 'platejs';
 import type { PlateLeafProps, RenderNodeWrapper } from 'platejs/react';
-
-import { CornerDownLeftIcon } from 'lucide-react';
 import { PlateLeaf, useEditorPlugin, usePluginOption } from 'platejs/react';
-
-import { cn } from '@/lib/utils';
+import * as React from 'react';
 import {
   type SuggestionConfig,
   suggestionPlugin,
 } from '@/components/suggestion-kit';
+import { cn } from '@/lib/utils';
 
 export function SuggestionLeaf(props: PlateLeafProps<TSuggestionText>) {
   const { api, setOption } = useEditorPlugin(suggestionPlugin);
@@ -37,17 +35,17 @@ export function SuggestionLeaf(props: PlateLeafProps<TSuggestionText>) {
     <PlateLeaf
       {...props}
       as={Component}
+      attributes={{
+        ...props.attributes,
+        onMouseEnter: () => setOption('hoverId', leafId),
+        onMouseLeave: () => setOption('hoverId', null),
+      }}
       className={cn(
         'bg-emerald-100 text-emerald-700 no-underline transition-colors duration-200',
         (hasActive || hasHover) && 'bg-emerald-200/80',
         hasRemove && 'bg-red-100 text-red-700',
         (hasActive || hasHover) && hasRemove && 'bg-red-200/80 no-underline'
       )}
-      attributes={{
-        ...props.attributes,
-        onMouseEnter: () => setOption('hoverId', leafId),
-        onMouseLeave: () => setOption('hoverId', null),
-      }}
     >
       {props.children}
     </PlateLeaf>
@@ -93,7 +91,6 @@ function SuggestionLineBreakContent({
 
   return (
     <span
-      ref={spanRef}
       className={cn(
         'absolute border-b-2 border-b-brand/[.24] bg-brand/[.08] text-justify text-brand/80 no-underline transition-colors duration-200',
         isInsert &&
@@ -105,11 +102,12 @@ function SuggestionLineBreakContent({
           (isActive || isHover) &&
           'border-b-gray-500 bg-gray-400/25 text-gray-500 no-underline'
       )}
+      contentEditable={false}
+      ref={spanRef}
       style={{
         bottom: 4.5,
         height: 21,
       }}
-      contentEditable={false}
     >
       <CornerDownLeftIcon className="mt-0.5 size-4" />
     </span>

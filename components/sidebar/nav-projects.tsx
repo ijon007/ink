@@ -1,13 +1,12 @@
-
-"use client"
+'use client';
 
 import {
   Folder,
+  type LucideIcon,
   MoreHorizontal,
   Share,
   Trash2,
-  type LucideIcon,
-} from "lucide-react"
+} from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -15,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -24,18 +23,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 export function NavProjects({
   projects,
 }: {
   projects: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
+    name: string;
+    url: string;
+    icon: LucideIcon;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -43,7 +42,10 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild className="rounded-md hover:bg-neutral-200/50 transition-all duration-300">
+            <SidebarMenuButton
+              asChild
+              className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
+            >
               <a href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
@@ -57,9 +59,9 @@ export function NavProjects({
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
+                align={isMobile ? 'end' : 'start'}
                 className="w-48"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
+                side={isMobile ? 'bottom' : 'right'}
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
@@ -86,5 +88,5 @@ export function NavProjects({
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

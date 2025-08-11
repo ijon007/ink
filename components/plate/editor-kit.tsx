@@ -1,6 +1,6 @@
 'use client';
 
-import { type Value, TrailingBlockPlugin } from 'platejs';
+import { TrailingBlockPlugin, type Value } from 'platejs';
 import { type TPlateEditor, useEditorRef } from 'platejs/react';
 
 import { AlignKit } from '@/components/plate/align-kit';
@@ -17,7 +17,7 @@ import { DndKit } from '@/components/plate/dnd-kit';
 // import { DocxKit } from '@/components/docx-kit';
 import { EmojiKit } from '@/components/plate/emoji-kit';
 // import { ExitBreakKit } from '@/components/exit-break-kit';
-import { FontKit } from '@/components/plate/font-kit'; 
+import { FontKit } from '@/components/plate/font-kit';
 import { LineHeightKit } from '@/components/plate/line-height-kit';
 import { LinkKit } from '@/components/plate/link-kit';
 import { ListKit } from '@/components/plate/list-kit';
@@ -26,9 +26,9 @@ import { MarkdownKit } from '@/components/plate/markdown-kit';
 // import { MediaKit } from '@/components/media-kit';
 import { MentionKit } from '@/components/plate/mention-kit';
 import { SlashKit } from '@/components/plate/slash-kit';
+import { SuggestionKit } from '@/components/plate/suggestion-kit';
 import { TableKit } from '@/components/plate/table-kit';
 import { ToggleKit } from '@/components/plate/toggle-kit';
-import { SuggestionKit } from '@/components/plate/suggestion-kit';
 
 export const EditorKit = [
   // Elements
