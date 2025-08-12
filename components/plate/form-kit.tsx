@@ -1,28 +1,40 @@
-'use client';
+import { createPlatePlugin } from "platejs/react";
+import { FormInputElement } from "../ui/form-input-node";
+import { FormTextareaElement } from "../ui/form-textarea-node";
+import { FormCheckboxElement } from "../ui/form-checkbox-node";
 
-import { createPlatePlugin } from 'platejs/react';
-import { FormInputElement } from '@/components/ui/form-input-node';
-import { FormTextareaElement } from '@/components/ui/form-textarea-node';
-import { FormCheckboxElement } from '@/components/ui/form-checkbox-node';
+const FormInputPlugin = createPlatePlugin({
+  key: 'form-input',
+  node: {
+    isElement: true,
+    isVoid: true,
+    type: 'form-input',
+    component: FormInputElement,
+  },
+})
 
-// Create form element plugins
+const FormTextareaPlugin = createPlatePlugin({
+  key: 'form-textarea',
+  node: {
+    isElement: true,
+    isVoid: true,
+    type: 'form-textarea',
+    component: FormTextareaElement,
+  },
+})
+
+const FormCheckboxPlugin = createPlatePlugin({
+  key: 'form-checkbox',
+  node: {
+    isElement: true,
+    isVoid: true,
+    type: 'form-checkbox',
+    component: FormCheckboxElement,
+  },
+})
+
 export const FormKit = [
-  createPlatePlugin({
-    key: 'form-input',
-    options: {},
-  }).configure({
-    node: { component: FormInputElement },
-  }),
-  createPlatePlugin({
-    key: 'form-textarea',
-    options: {},
-  }).configure({
-    node: { component: FormTextareaElement },
-  }),
-  createPlatePlugin({
-    key: 'form-checkbox',
-    options: {},
-  }).configure({
-    node: { component: FormCheckboxElement },
-  }),
+  FormInputPlugin,
+  FormTextareaPlugin,
+  FormCheckboxPlugin,
 ];

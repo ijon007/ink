@@ -11,6 +11,7 @@ import { BaseBasicMarksKit } from '@/components/plate/basic-marks-base-kit';
 // import { CalloutKit } from '@/components/callout-kit';
 import { CodeBlockKit } from '@/components/plate/code-block-kit';
 import { ColumnKit } from '@/components/plate/column-kit';
+import { BlockSelectionKit } from '@/components/plate/block-selection-kit';
 import { CursorOverlayKit } from '@/components/plate/cursor-overlay-kit';
 import { DateKit } from '@/components/plate/date-kit';
 import { DndKit } from '@/components/plate/dnd-kit';
@@ -61,6 +62,7 @@ export const EditorKit = [
   ...SuggestionKit,
   ...AutoformatKit,
   ...CursorOverlayKit,
+  ...BlockSelectionKit,
   // ...BlockMenuKit,
   ...DndKit,
   ...EmojiKit,

@@ -64,9 +64,28 @@ const insertBlockMap: Record<
     editor.getTransforms(TablePlugin).insert.table({}, { select: true }),
   [KEYS.toc]: (editor) => insertToc(editor, { select: true }),
   [KEYS.video]: (editor) => insertVideoPlaceholder(editor, { select: true }),
-  'form-input': (editor) => editor.tf.insertNodes(editor.api.create.block({ type: 'form-input' }), { select: true }),
-  'form-textarea': (editor) => editor.tf.insertNodes(editor.api.create.block({ type: 'form-textarea' }), { select: true }),
-  'form-checkbox': (editor) => editor.tf.insertNodes(editor.api.create.block({ type: 'form-checkbox' }), { select: true }),
+  'form-input': (editor) => editor.tf.insertNodes(editor.api.create.block({ 
+    type: 'form-input',
+    children: [{ text: '' }],
+    label: 'Text Input',
+    placeholder: 'Enter text...',
+    required: false
+  }), { select: true }),
+  'form-textarea': (editor) => editor.tf.insertNodes(editor.api.create.block({ 
+    type: 'form-textarea',
+    children: [{ text: '' }],
+    label: 'Text Area',
+    placeholder: 'Enter text...',
+    required: false,
+    rows: 4
+  }), { select: true }),
+  'form-checkbox': (editor) => editor.tf.insertNodes(editor.api.create.block({ 
+    type: 'form-checkbox',
+    children: [{ text: '' }],
+    label: 'Checkbox Option',
+    required: false,
+    checked: false
+  }), { select: true }),
 };
 
 const insertInlineMap: Record<
