@@ -77,6 +77,10 @@ export function PlateEditor({ note }: PlateEditorProps) {
     updateNote(currentNote.id, { icon: iconName });
   };
 
+  const handleIconColorChange = (iconColor: string) => {
+    updateNote(currentNote.id, { iconColor });
+  };
+
   React.useEffect(() => {
     if (currentNote.content && currentNote.content !== 'Start writing your note here...') {
       try {
@@ -118,7 +122,9 @@ export function PlateEditor({ note }: PlateEditorProps) {
         <div className="flex items-center gap-3 flex-1">
           <IconPicker
             value={currentNote.icon || 'FileText'}
+            iconColor={currentNote.iconColor || 'gray'}
             onChange={handleIconChange}
+            onColorChange={handleIconColorChange}
           />
           <input
             className="w-full border-none bg-transparent font-bold text-4xl outline-none placeholder:text-muted-foreground/60 focus:placeholder:text-muted-foreground/40"

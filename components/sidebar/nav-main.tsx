@@ -16,6 +16,7 @@ import {
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
 import { useState } from 'react';
 import NoteActions from './note-actions';
+import { cn, getIconColorClasses } from '@/lib/utils';
 
 export function NavMain() {
   const router = useRouter();
@@ -72,7 +73,7 @@ export function NavMain() {
                 <div className="flex items-center gap-2">
                   {(() => {
                     const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
-                    return <IconComp className="size-4" />;
+                    return <IconComp className={cn("size-4", getIconColorClasses(note.iconColor))} />;
                   })()}
                   <span className="truncate">{note.title}</span>
                 </div>

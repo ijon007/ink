@@ -3,6 +3,8 @@ import { FileText, Star, Trash2 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { Button } from '../ui/button';
 import { Note } from '@/lib/stores/notes-store';
+import { getIconColorClasses } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 type NoteCardProps = {
     note: Note;
@@ -21,7 +23,7 @@ const NoteCard = ({ note, handleStarNote, handleDeleteNote }: NoteCardProps) => 
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                         {(() => {
                             const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
-                            return <IconComp className="h-4 w-4 text-gray-500 flex-shrink-0" />;
+                            return <IconComp className={cn("h-4 w-4 flex-shrink-0", getIconColorClasses(note.iconColor))} />;
                         })()}
                         <div className="min-w-0 flex-1">
                             <h3 className="font-medium text-gray-900 truncate text-sm">

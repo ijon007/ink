@@ -9,6 +9,7 @@ export interface Note {
   updatedAt: string;
   isStarred: boolean;
   icon: string;
+  iconColor: string;
 }
 
 interface NotesStore {
@@ -18,6 +19,7 @@ interface NotesStore {
   deleteNote: (id: string) => void;
   starNote: (id: string) => void;
   getNoteById: (id: string) => Note | undefined;
+  migrateNotes: () => void;
 }
 
 export const useNotesStore = create<NotesStore>()(
@@ -34,6 +36,7 @@ export const useNotesStore = create<NotesStore>()(
           updatedAt: new Date().toISOString(),
           isStarred: false,
           icon: 'FileText',
+          iconColor: 'gray',
         };
         
         set((state) => ({
@@ -49,6 +52,15 @@ export const useNotesStore = create<NotesStore>()(
             note.id === id 
               ? { ...note, ...updates, updatedAt: new Date().toISOString() }
               : note
+          )
+        }));
+      },
+
+      // Migration function to add iconColor to existing notes
+      migrateNotes: () => {
+        set((state) => ({
+          notes: state.notes.map(note => 
+            note.iconColor ? note : { ...note, iconColor: 'gray' }
           )
         }));
       },

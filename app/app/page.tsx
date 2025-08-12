@@ -3,14 +3,19 @@
 import { Plus, FileText } from "lucide-react";
 import { useNotesStore } from '@/lib/stores/notes-store';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteCard from '@/components/notes/note-card';
 
 function EditorHomePage() {
-  const { notes, addNote, deleteNote, starNote } = useNotesStore();
+  const { notes, addNote, deleteNote, starNote, migrateNotes } = useNotesStore();
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
+
+  // Run migration for existing notes
+  useEffect(() => {
+    migrateNotes();
+  }, [migrateNotes]);
 
   const handleCreateNote = () => {
     setIsCreating(true);

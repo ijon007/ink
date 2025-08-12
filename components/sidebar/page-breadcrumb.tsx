@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation"
 import { SidebarTrigger } from "../ui/sidebar"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "../ui/breadcrumb"
 import { Separator } from "../ui/separator"
-import { Home, FileText } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Home, FileText, Share } from "lucide-react"
+import { cn, getIconColorClasses } from "@/lib/utils"
 import { useNotesStore } from "@/lib/stores/notes-store"
 import * as LucideIcons from 'lucide-react'
+import { Button } from "../ui/button"
 
 const PageBreadcrumb = () => {
     const pathname = usePathname()
@@ -30,7 +31,7 @@ const PageBreadcrumb = () => {
             if (note) {
                 displayText = note.title
                 const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText
-                icon = <IconComp className="size-4" />
+                icon = <IconComp className={cn("size-4", getIconColorClasses(note.iconColor))} />
             }
         }
 
@@ -39,7 +40,7 @@ const PageBreadcrumb = () => {
 				<BreadcrumbItem className={cn(isLast && 'cursor-default')}>
 					<BreadcrumbLink href={href} className="flex items-center gap-2 rounded-md px-2 py-1 transition-all duration-300 hover:bg-neutral-200/30">
 						{icon}
-						<BreadcrumbPage>{displayText}</BreadcrumbPage>
+						<BreadcrumbPage className="text-sm">{displayText}</BreadcrumbPage>
 					</BreadcrumbLink>
 				</BreadcrumbItem>
 				{!isLast && (
@@ -50,19 +51,25 @@ const PageBreadcrumb = () => {
     })
 
     return (
-        <header className="flex h-10 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              className="mr-2 data-[orientation=vertical]:h-4"
-              orientation="vertical"
-            />
-            <Breadcrumb>
-              <BreadcrumbList className="gap-1">
-                {breadcrumbItems}
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
+        <header className="flex flex-row justify-between h-10 shrink-0 items-center gap-2 px-2">
+			<div className="flex items-center gap-2 px-4">
+				<SidebarTrigger className="-ml-1" />
+				<Separator
+					className="mr-2 data-[orientation=vertical]:h-4"
+					orientation="vertical"
+				/>
+				<Breadcrumb>
+					<BreadcrumbList className="gap-1">
+						{breadcrumbItems}
+					</BreadcrumbList>
+				</Breadcrumb>
+			</div>
+			{pathname.includes('app') && pathname !== '/app' && (
+				<Button size="sm" className="flex flex-row items-center gap-2">
+					<Share className="size-3" />
+					<span>Share</span>
+				</Button>
+			)}
         </header>
     )
 }

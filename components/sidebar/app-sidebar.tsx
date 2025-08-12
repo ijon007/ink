@@ -68,7 +68,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="bg-neutral-100">
         <NavMain />
-        <NavProjects projects={data.forms} />
+        {/* <NavProjects projects={data.forms} /> */}
       </SidebarContent>
       <SidebarFooter className='bg-neutral-100'>
         <NavUser user={data.user} />
