@@ -1,39 +1,31 @@
 'use client';
 
-import { ChevronRight, type LucideIcon, Plus } from 'lucide-react';
+import { Plus, FileText } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
+  SidebarMenuButton,
 } from '@/components/ui/sidebar';
+import { useNotesStore, type Note } from '@/lib/stores/notes-store';
+import { useState } from 'react';
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
+export function NavMain() {
+  const router = useRouter();
+  const { notes, addNote } = useNotesStore();
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateNote = () => {
+    setIsCreating(true);
+    const newNote = addNote('Untitled Note');
+    router.push(`/app/${newNote.id}`);
+    setIsCreating(false);
+  };
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="flex w-full items-center justify-between px-1">
@@ -42,49 +34,27 @@ export function NavMain({
           className="size-6 rounded-md transition-all duration-300 hover:bg-neutral-200/50"
           size="icon"
           variant="ghost"
+          onClick={handleCreateNote}
+          disabled={isCreating}
         >
           <Plus className="size-4" />
         </Button>
       </SidebarGroupLabel>
+      
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible asChild defaultOpen={item.isActive} key={item.title}>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
-                tooltip={item.title}
-              >
-                <Link href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-              {item.items?.length ? (
-                <>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="data-[state=open]:rotate-90">
-                      <ChevronRight />
-                      <span className="sr-only">Toggle</span>
-                    </SidebarMenuAction>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <Link href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </>
-              ) : null}
-            </SidebarMenuItem>
-          </Collapsible>
+        {notes.map((note: Note) => (
+          <SidebarMenuItem key={note.id}>
+            <SidebarMenuButton
+              asChild
+              className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
+              tooltip={note.title}
+            >
+              <Link href={`/app/${note.id}`}>
+                <FileText className="size-4" />
+                <span className="truncate">{note.title}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         ))}
       </SidebarMenu>
     </SidebarGroup>
