@@ -35,17 +35,17 @@ const PageBreadcrumb = () => {
         }
 
         return (
-			<>
-            <BreadcrumbItem key={segment} className={cn(isLast && 'cursor-default')}>
-                <BreadcrumbLink href={href} className="flex items-center gap-2 rounded-md px-2 py-1 transition-all duration-300 hover:bg-neutral-200/60">
-                    {icon}
-                    <BreadcrumbPage>{displayText}</BreadcrumbPage>
-                </BreadcrumbLink>
-            </BreadcrumbItem>
+			<div key={index} className="flex flex-row items-center gap-1">
+				<BreadcrumbItem className={cn(isLast && 'cursor-default')}>
+					<BreadcrumbLink href={href} className="flex items-center gap-2 rounded-md px-2 py-1 transition-all duration-300 hover:bg-neutral-200/30">
+						{icon}
+						<BreadcrumbPage>{displayText}</BreadcrumbPage>
+					</BreadcrumbLink>
+				</BreadcrumbItem>
 				{!isLast && (
 					<BreadcrumbSeparator />
 				)}
-			</>
+			</div>
         )
     })
 

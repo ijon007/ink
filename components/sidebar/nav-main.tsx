@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, FileText } from 'lucide-react';
+import { Plus, FileText, EllipsisVertical } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,10 +14,11 @@ import {
 } from '@/components/ui/sidebar';
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
 import { useState } from 'react';
+import NoteActions from './note-actions';
 
 export function NavMain() {
   const router = useRouter();
-  const { notes, addNote } = useNotesStore();
+  const { notes, addNote, deleteNote, starNote } = useNotesStore();
   const [isCreating, setIsCreating] = useState(false);
 
   const handleCreateNote = () => {
@@ -25,6 +26,22 @@ export function NavMain() {
     const newNote = addNote('Untitled Note');
     router.push(`/app/${newNote.id}`);
     setIsCreating(false);
+  };
+
+  const handleStar = (noteId: string) => {
+    starNote(noteId);
+  };
+
+  const handleDelete = (noteId: string) => {
+    deleteNote(noteId);
+    // If we're currently on the deleted note, redirect to the first available note
+    const remainingNotes = notes.filter(note => note.id !== noteId);
+    if (remainingNotes.length > 0) {
+      router.push(`/app/${remainingNotes[0].id}`);
+    } else {
+      // If no notes left, redirect to home or create a new note
+      router.push('/app');
+    }
   };
 
   return (
@@ -44,19 +61,30 @@ export function NavMain() {
       
       <SidebarMenu>
         {notes.map((note: Note) => (
-          <SidebarMenuItem key={note.id}>
+          <SidebarMenuItem key={note.id} className='group'>
             <SidebarMenuButton
               asChild
               className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
               tooltip={note.title}
             >
-              <Link href={`/app/${note.id}`}>
-                {(() => {
-                  const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
-                  return <IconComp className="size-4" />;
-                })()}
-                <span className="truncate">{note.title}</span>
+              <Link href={`/app/${note.id}`} className='flex flex-row items-center justify-between'>
+                <div className="flex items-center gap-2">
+                  {(() => {
+                    const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
+                    return <IconComp className="size-4" />;
+                  })()}
+                  <span className="truncate">{note.title}</span>
+                </div>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <NoteActions
+                    noteId={note.id}
+                    isStarred={note.isStarred}
+                    onStar={handleStar}
+                    onDelete={handleDelete}
+                  />
+                </div>
               </Link>
+              
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
