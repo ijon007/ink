@@ -61,7 +61,7 @@ export function FormInputElement({
       {...props}
       className={cn(
         'relative my-4',
-        selected && focused && 'ring-2 ring-ring ring-offset-2',
+        selected && focused && 'ring-1 ring-blue-500/50 rounded-md',
         className
       )}
     >

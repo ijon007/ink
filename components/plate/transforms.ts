@@ -86,6 +86,22 @@ const insertBlockMap: Record<
     required: false,
     checked: false
   }), { select: true }),
+  'form-multiple-choice': (editor) => editor.tf.insertNodes(editor.api.create.block({ 
+    type: 'form-multiple-choice',
+    children: [{ text: '' }],
+    label: 'Multiple Choice Question',
+    required: false,
+    options: ['Option 1', 'Option 2'],
+    selectedValue: ''
+  }), { select: true }),
+  'form-date-picker': (editor) => editor.tf.insertNodes(editor.api.create.block({ 
+    type: 'form-date-picker',
+    children: [{ text: '' }],
+    label: 'Date Picker',
+    placeholder: 'Pick a date',
+    required: false,
+    selectedDate: undefined
+  }), { select: true }),
 };
 
 const insertInlineMap: Record<

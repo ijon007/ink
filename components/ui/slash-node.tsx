@@ -200,6 +200,18 @@ const groups: Group[] = [
         label: 'Checkbox',
         value: 'form-checkbox',
       },
+      {
+        icon: <ListIcon />,
+        keywords: ['multiple choice', 'radio', 'options', 'choice'],
+        label: 'Multiple Choice',
+        value: 'form-multiple-choice',
+      },
+      {
+        icon: <Square />,
+        keywords: ['date', 'calendar', 'picker', 'time'],
+        label: 'Date Picker',
+        value: 'form-date-picker',
+      },
     ].map((item) => ({
       ...item,
       onSelect: (editor, value) => {

@@ -27,17 +27,14 @@ export function FormCheckboxElement({
   const focused = useFocused();
   const [labelText, setLabelText] = useState(element?.label);
   
-  // Defensive programming: ensure element exists and has required properties
   if (!element || !element.id) {
     console.warn('FormCheckboxElement: element or element.id is undefined', element);
     return null;
   }
   
-  // Get plugin options if available
   const required = element?.required || false;
   const checked = element?.checked || false;
 
-  // Update local state when element changes
   useEffect(() => {
     setLabelText(element?.label);
   }, [element?.label]);
@@ -55,7 +52,7 @@ export function FormCheckboxElement({
       {...props}
       className={cn(
         'relative my-4',
-        selected && focused && 'ring-2 ring-ring ring-offset-2',
+        selected && focused && 'ring-1 ring-blue-500/50 rounded-md',
         className
       )}
     >

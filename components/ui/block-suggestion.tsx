@@ -75,6 +75,8 @@ const TYPE_TEXT_MAP: Record<string, (node?: TElement) => string> = {
   'form-input': () => 'Text Input',
   'form-textarea': () => 'Text Area',
   'form-checkbox': () => 'Checkbox',
+  'form-multiple-choice': () => 'Multiple Choice',
+  'form-date-picker': () => 'Date Picker',
 };
 
 export function BlockSuggestion({ element }: { element: TSuggestionElement }) {
