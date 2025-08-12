@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuAction,
 } from '@/components/ui/sidebar';
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
 import { useState } from 'react';
@@ -75,14 +76,12 @@ export function NavMain() {
                   })()}
                   <span className="truncate">{note.title}</span>
                 </div>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <NoteActions
+                <NoteActions
                     noteId={note.id}
                     isStarred={note.isStarred}
                     onStar={handleStar}
                     onDelete={handleDelete}
-                  />
-                </div>
+                />
               </Link>
               
             </SidebarMenuButton>

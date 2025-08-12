@@ -18,6 +18,7 @@ import { DndKit } from '@/components/plate/dnd-kit';
 import { EmojiKit } from '@/components/plate/emoji-kit';
 // import { ExitBreakKit } from '@/components/exit-break-kit';
 import { FontKit } from '@/components/plate/font-kit';
+import { FormKit } from '@/components/plate/form-kit';
 import { LineHeightKit } from '@/components/plate/line-height-kit';
 import { LinkKit } from '@/components/plate/link-kit';
 import { ListKit } from '@/components/plate/list-kit';
@@ -44,6 +45,7 @@ export const EditorKit = [
   ...DateKit,
   ...LinkKit,
   ...MentionKit,
+  ...FormKit,
 
   // Marks
   ...BaseBasicMarksKit,

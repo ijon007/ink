@@ -19,6 +19,9 @@ import {
   Square,
   Table,
   TableOfContentsIcon,
+  Type,
+  AlignLeft,
+  CheckSquare,
 } from 'lucide-react';
 import { KEYS, type TComboboxInputElement } from 'platejs';
 import type { PlateEditor, PlateElementProps } from 'platejs/react';
@@ -168,6 +171,34 @@ const groups: Group[] = [
         icon: <RadicalIcon />,
         label: 'Equation',
         value: KEYS.equation,
+      },
+    ].map((item) => ({
+      ...item,
+      onSelect: (editor, value) => {
+        insertBlock(editor, value);
+      },
+    })),
+  },
+  {
+    group: 'Form blocks',
+    items: [
+      {
+        icon: <Type />,
+        keywords: ['input', 'text', 'field'],
+        label: 'Text Input',
+        value: 'form-input',
+      },
+      {
+        icon: <AlignLeft />,
+        keywords: ['textarea', 'multiline', 'long text'],
+        label: 'Text Area',
+        value: 'form-textarea',
+      },
+      {
+        icon: <CheckSquare />,
+        keywords: ['checkbox', 'check', 'option'],
+        label: 'Checkbox',
+        value: 'form-checkbox',
       },
     ].map((item) => ({
       ...item,

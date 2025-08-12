@@ -7,7 +7,7 @@ import {
 import PageBreadcrumb from '@/components/sidebar/page-breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'ink. | Editor',
+  title: 'ink. | Notebook',
   description: 'A simple, beautiful, and powerful text editor.',
 };
 

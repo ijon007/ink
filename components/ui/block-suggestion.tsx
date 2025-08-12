@@ -72,6 +72,9 @@ const TYPE_TEXT_MAP: Record<string, (node?: TElement) => string> = {
   [KEYS.toc]: () => 'Table of Contents',
   [KEYS.toggle]: () => 'Toggle',
   [KEYS.video]: () => 'Video',
+  'form-input': () => 'Text Input',
+  'form-textarea': () => 'Text Area',
+  'form-checkbox': () => 'Checkbox',
 };
 
 export function BlockSuggestion({ element }: { element: TSuggestionElement }) {

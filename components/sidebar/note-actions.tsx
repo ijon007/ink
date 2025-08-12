@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { SidebarMenuAction } from '../ui/sidebar';
 
 interface NoteActionsProps {
   noteId: string;
@@ -34,15 +35,13 @@ const NoteActions: React.FC<NoteActionsProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-5 w-5 p-0 hover:bg-accent/50"
-          onClick={(e) => e.stopPropagation()}
+        <SidebarMenuAction
+          showOnHover
+          className="h-5 w-5 p-0 hover:bg-transparent"
         >
           <MoreHorizontal className="h-3 w-3" />
           <span className="sr-only">Note actions</span>
-        </Button>
+        </SidebarMenuAction>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="right" className="w-28">
         <DropdownMenuItem onClick={handleStar} className="py-1 cursor-pointer">
