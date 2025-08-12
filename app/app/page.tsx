@@ -1,6 +1,7 @@
 'use client';
 
 import { Plus, FileText, Star, Trash2 } from "lucide-react";
+import * as LucideIcons from 'lucide-react';
 import Link from "next/link";
 import { useNotesStore } from '@/lib/stores/notes-store';
 import { Button } from '@/components/ui/button';
@@ -63,7 +64,10 @@ function EditorHomePage() {
                     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all group-hover:border-blue-300">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <FileText className="h-5 w-5 text-gray-400 group-hover:text-blue-500" />
+                          {(() => {
+                            const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
+                            return <IconComp className="h-5 w-5 text-gray-400 group-hover:text-blue-500" />;
+                          })()}
                           <div>
                             <h3 className="font-medium text-gray-900 group-hover:text-blue-600">
                               {note.title}

@@ -7,6 +7,7 @@ export interface Note {
   createdAt: Date;
   updatedAt: Date;
   isStarred: boolean;
+  icon: string; // Lucide icon name
 }
 
 interface NotesStore {
@@ -29,6 +30,7 @@ export const useNotesStore = create<NotesStore>((set, get) => ({
       createdAt: new Date(),
       updatedAt: new Date(),
       isStarred: false,
+      icon: 'FileText',
     };
     
     set((state) => ({

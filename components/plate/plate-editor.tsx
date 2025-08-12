@@ -6,13 +6,14 @@ import { Editor, EditorContainer } from '@/components/plate/editor';
 import { EditorKit } from './editor-kit';
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
 import { useDebounce } from '@/hooks/use-debounce';
+import { IconPicker } from '@/components/notes/icon-picker';
 
 interface PlateEditorProps {
   note: Note;
 }
 
 export function PlateEditor({ note }: PlateEditorProps) {
-  const { updateNote } = useNotesStore();
+  const { updateNote, notes } = useNotesStore();
   const editor = usePlateEditor({
     plugins: EditorKit,
   });
@@ -21,13 +22,23 @@ export function PlateEditor({ note }: PlateEditorProps) {
   const [content, setContent] = React.useState<any[]>([]);
   const [title, setTitle] = React.useState(note?.title || 'Untitled Note');
   const [isSaving, setIsSaving] = React.useState(false);
-  
-  // Debounce content updates to avoid too many store updates while typing
+
+  const currentNote = React.useMemo(() => 
+    notes.find(n => n.id === note.id), [notes, note.id]
+  );
+
+  React.useEffect(() => {
+    console.log('PlateEditor - note prop:', note);
+    console.log('PlateEditor - currentNote from store:', currentNote);
+    console.log('PlateEditor - note.icon:', note?.icon);
+    console.log('PlateEditor - currentNote.icon:', currentNote?.icon);
+    console.log('All notes in store:', notes);
+  }, [note, currentNote, notes]);
+
   const debouncedContent = useDebounce(content, 1000);
   const debouncedTitle = useDebounce(title, 500);
 
-  // Early return if note is not available
-  if (!note) {
+  if (!currentNote) {
     return (
       <div className="flex h-full flex-col items-center justify-center">
         <p className="text-muted-foreground">Loading note...</p>
@@ -43,7 +54,6 @@ export function PlateEditor({ note }: PlateEditorProps) {
   const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      // Focus the editor
       if (editorRef.current) {
         editorRef.current.focus();
       }
@@ -55,20 +65,22 @@ export function PlateEditor({ note }: PlateEditorProps) {
   };
 
   const handleEditorBlur = () => {
-    // Immediately save content when editor loses focus
     if (content.length > 0) {
       setIsSaving(true);
       const contentString = JSON.stringify(content);
-      updateNote(note.id, { content: contentString });
+      updateNote(currentNote.id, { content: contentString });
       setTimeout(() => setIsSaving(false), 1000);
     }
   };
 
-  // Initialize content from note
+  const handleIconChange = (iconName: string) => {
+    updateNote(currentNote.id, { icon: iconName });
+  };
+
   React.useEffect(() => {
-    if (note.content && note.content !== 'Start writing your note here...') {
+    if (currentNote.content && currentNote.content !== 'Start writing your note here...') {
       try {
-        const parsedContent = JSON.parse(note.content);
+        const parsedContent = JSON.parse(currentNote.content);
         setContent(parsedContent);
       } catch (error) {
         console.error('Failed to parse note content:', error);
@@ -77,50 +89,47 @@ export function PlateEditor({ note }: PlateEditorProps) {
     } else {
       setContent([]);
     }
-  }, [note.content]);
+  }, [currentNote.content]);
 
-  // Sync local title state when note changes
   React.useEffect(() => {
-    setTitle(note.title);
-  }, [note.title]);
+    setTitle(currentNote.title);
+  }, [currentNote.title]);
 
-  // Update store when debounced content changes
   React.useEffect(() => {
-    if (debouncedContent.length > 0 || note.content !== 'Start writing your note here...') {
+    if (debouncedContent.length > 0 || currentNote.content !== 'Start writing your note here...') {
       setIsSaving(true);
       const contentString = JSON.stringify(debouncedContent);
-      updateNote(note.id, { content: contentString });
+      updateNote(currentNote.id, { content: contentString });
       setTimeout(() => setIsSaving(false), 1000);
     }
-  }, [debouncedContent, note.id, updateNote, note.content]);
+  }, [debouncedContent, currentNote.id, updateNote, currentNote.content]);
 
-  // Update store when debounced title changes
   React.useEffect(() => {
-    if (debouncedTitle && debouncedTitle.trim() !== '' && debouncedTitle !== note.title) {
+    if (debouncedTitle && debouncedTitle.trim() !== '' && debouncedTitle !== currentNote.title) {
       setIsSaving(true);
-      updateNote(note.id, { title: debouncedTitle.trim() });
+      updateNote(currentNote.id, { title: debouncedTitle.trim() });
       setTimeout(() => setIsSaving(false), 1000);
     }
-  }, [debouncedTitle, note.id, updateNote, note.title]);
+  }, [debouncedTitle, currentNote.id, updateNote, currentNote.title]);
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between px-16 pt-4 pb-4 sm:px-[max(64px,calc(50%-350px))]">
-        <input
-          className="w-full border-none bg-transparent font-semibold text-2xl outline-none placeholder:text-muted-foreground/60 focus:placeholder:text-muted-foreground/40"
-          onKeyDown={handleTitleKeyDown}
-          onChange={handleTitleChange}
-          placeholder="Enter title..."
-          ref={titleRef}
-          type="text"
-          value={title}
-        />
-        {isSaving && (
-          <div className="flex items-center text-sm text-muted-foreground">
-            <div className="mr-2 h-2 w-2 animate-pulse rounded-full bg-muted-foreground"></div>
-            Saving...
-          </div>
-        )}
+      <div className="px-16 pt-4 pb-4 sm:px-[max(64px,calc(50%-350px))]">
+        <div className="flex items-center gap-3 flex-1">
+          <IconPicker
+            value={currentNote.icon || 'FileText'}
+            onChange={handleIconChange}
+          />
+          <input
+            className="w-full border-none bg-transparent font-bold text-4xl outline-none placeholder:text-muted-foreground/60 focus:placeholder:text-muted-foreground/40"
+            onKeyDown={handleTitleKeyDown}
+            onChange={handleTitleChange}
+            placeholder="Enter title..."
+            ref={titleRef}
+            type="text"
+            value={title}
+          />
+        </div>
       </div>
       <Plate 
         editor={editor}

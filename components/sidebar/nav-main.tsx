@@ -1,6 +1,7 @@
 'use client';
 
 import { Plus, FileText } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -50,7 +51,10 @@ export function NavMain() {
               tooltip={note.title}
             >
               <Link href={`/app/${note.id}`}>
-                <FileText className="size-4" />
+                {(() => {
+                  const IconComp = (LucideIcons as Record<string, any>)[note.icon] || FileText;
+                  return <IconComp className="size-4" />;
+                })()}
                 <span className="truncate">{note.title}</span>
               </Link>
             </SidebarMenuButton>

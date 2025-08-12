@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PlateEditor } from "@/components/plate/plate-editor";
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
@@ -13,7 +13,7 @@ interface NoteEditorProps {
 
 export function NoteEditor({ noteId }: NoteEditorProps) {
   const router = useRouter();
-  const { getNoteById } = useNotesStore();
+  const { getNoteById, updateNote } = useNotesStore();
   
   const [note, setNote] = useState<Note | null>(null);
 
@@ -25,6 +25,7 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
       }
     }
   }, [noteId, getNoteById]);
+
 
   if (!note) {
     return (
