@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation"
 import { SidebarTrigger } from "../ui/sidebar"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "../ui/breadcrumb"
 import { Separator } from "../ui/separator"
-import { Home, FileText, Share } from "lucide-react"
+import { Home, FileText } from "lucide-react"
 import { cn, getIconColorClasses } from "@/lib/utils"
 import { useNotesStore } from "@/lib/stores/notes-store"
 import * as LucideIcons from 'lucide-react'
-import { Button } from "../ui/button"
+import { PublishDropdown } from "./publish-dropdown"
 
 const PageBreadcrumb = () => {
     const pathname = usePathname()
@@ -51,7 +51,7 @@ const PageBreadcrumb = () => {
     })
 
     return (
-        <header className="flex flex-row justify-between h-10 shrink-0 items-center gap-2 px-2">
+        <header className="flex flex-row justify-between h-10 shrink-0 items-center gap-2 px-2 mt-1">
 			<div className="flex items-center gap-2 px-4">
 				<SidebarTrigger className="-ml-1" />
 				<Separator
@@ -64,12 +64,11 @@ const PageBreadcrumb = () => {
 					</BreadcrumbList>
 				</Breadcrumb>
 			</div>
-			{pathname.includes('app') && pathname !== '/app' && (
-				<Button size="sm" className="flex flex-row items-center gap-2">
-					<Share className="size-3" />
-					<span>Share</span>
-				</Button>
-			)}
+			{pathname.includes('app') && pathname !== '/app' && (() => {
+				const noteIdMatch = pathname.match(/\/app\/(.+)/)
+				const noteId = noteIdMatch?.[1]
+				return noteId ? <PublishDropdown noteId={noteId} /> : null
+			})()}
         </header>
     )
 }

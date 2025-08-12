@@ -1,6 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export interface PublishSettings {
+  siteTitle: string;
+  siteDescription: string;
+  customDomain: string;
+  isPasswordProtected: boolean;
+  password: string;
+  allowComments: boolean;
+  showLastUpdated: boolean;
+  customCSS: string;
+}
+
 export interface Note {
   id: string;
   title: string;
@@ -10,6 +21,9 @@ export interface Note {
   isStarred: boolean;
   icon: string;
   iconColor: string;
+  isPublished?: boolean;
+  publishedUrl?: string;
+  publishSettings?: PublishSettings;
 }
 
 interface NotesStore {
@@ -19,6 +33,8 @@ interface NotesStore {
   deleteNote: (id: string) => void;
   starNote: (id: string) => void;
   getNoteById: (id: string) => Note | undefined;
+  publishNote: (id: string, settings: PublishSettings) => Promise<string>;
+  unpublishNote: (id: string) => void;
   migrateNotes: () => void;
 }
 
@@ -83,6 +99,91 @@ export const useNotesStore = create<NotesStore>()(
       
       getNoteById: (id: string) => {
         return get().notes.find(note => note.id === id);
+      },
+
+      publishNote: async (id: string, settings: PublishSettings) => {
+        const note = get().notes.find(n => n.id === id);
+        if (!note) throw new Error('Note not found');
+
+        try {
+          const response = await fetch('/api/publish', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              noteId: id,
+              publishSettings: settings,
+              noteContent: {
+                title: note.title,
+                content: note.content,
+                icon: note.icon,
+                iconColor: note.iconColor,
+              }
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to publish note');
+          }
+
+          const result = await response.json();
+          const publishedUrl = result.publishedUrl;
+
+          // Update the note with publish info
+          set((state) => ({
+            notes: state.notes.map(note => 
+              note.id === id 
+                ? { 
+                    ...note, 
+                    isPublished: true,
+                    publishedUrl,
+                    publishSettings: settings,
+                    updatedAt: new Date().toISOString() 
+                  }
+                : note
+            )
+          }));
+
+          return publishedUrl;
+        } catch (error) {
+          console.error('Publishing failed:', error);
+          throw error;
+        }
+      },
+
+      unpublishNote: async (id: string) => {
+        try {
+          const response = await fetch('/api/publish', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ noteId: id }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to unpublish note');
+          }
+
+          // Update the note state
+          set((state) => ({
+            notes: state.notes.map(note => 
+              note.id === id 
+                ? { 
+                    ...note, 
+                    isPublished: false,
+                    publishedUrl: undefined,
+                    publishSettings: undefined,
+                    updatedAt: new Date().toISOString() 
+                  }
+                : note
+            )
+          }));
+        } catch (error) {
+          console.error('Unpublishing failed:', error);
+          throw error;
+        }
       },
     }),
     {
