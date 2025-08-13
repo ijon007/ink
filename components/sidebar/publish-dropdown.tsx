@@ -30,7 +30,6 @@ interface PublishDropdownProps {
   noteId: string
 }
 
-
 export function PublishDropdown({ noteId }: PublishDropdownProps) {
   const { getNoteById, publishNote, unpublishNote } = useNotesStore()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
