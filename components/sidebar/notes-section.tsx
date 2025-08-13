@@ -17,7 +17,7 @@ import { useState } from 'react';
 import NoteActions from './note-actions';
 import { cn, getIconColorClasses } from '@/lib/utils';
 
-export function NavMain() {
+export function NotesSection() {
   const router = useRouter();
   const { notes, addNote, deleteNote, starNote } = useNotesStore();
   const [isCreating, setIsCreating] = useState(false);

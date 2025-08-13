@@ -25,7 +25,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 
-export function NavProjects({
+export function PublishedNotes({
   projects,
 }: {
   projects: {
@@ -36,9 +36,22 @@ export function NavProjects({
 }) {
   const { isMobile } = useSidebar();
 
+  if (projects.length === 0) {
+    return (
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroupLabel>Published</SidebarGroupLabel>
+        <SidebarMenu className='px-2'>
+          <SidebarMenuItem className='text-muted-foreground text-xs'>
+            Nothing here yet
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    );
+  }
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Forms</SidebarGroupLabel>
+      <SidebarGroupLabel>Published</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
@@ -80,12 +93,6 @@ export function NavProjects({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <MoreHorizontal />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );

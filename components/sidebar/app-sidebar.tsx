@@ -17,8 +17,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { NavMain } from './nav-main';
+import { NotesSection } from './notes-section';
 import { NavUser } from './nav-user';
+import { PublishedNotes } from './published-notes';
 
 const data = {
   user: {
@@ -26,22 +27,8 @@ const data = {
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },
-  forms: [
-    {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
-    },
+  publishedNotes: [
+    
   ],
 };
 
@@ -66,8 +53,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="bg-neutral-100">
-        <NavMain />
-        {/* <NavProjects projects={data.forms} /> */}
+        <NotesSection />
+        <PublishedNotes projects={data.publishedNotes} />
       </SidebarContent>
       <SidebarFooter className='bg-neutral-100'>
         <NavUser user={data.user} />
