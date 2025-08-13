@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     
     const publishedUrl = publishSettings.customDomain 
       ? `https://${publishSettings.customDomain}`
-      : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/published/${slug}-${noteId.slice(-6)}`
+      : `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/published/${slug}-${noteId.slice(-6)}`
 
     // In a real implementation, you would:
     // 1. Store the published note in a database

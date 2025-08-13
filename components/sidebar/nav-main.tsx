@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, FileText, EllipsisVertical } from 'lucide-react';
+import { Plus, FileText } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuAction,
 } from '@/components/ui/sidebar';
 import { useNotesStore, type Note } from '@/lib/stores/notes-store';
 import { useState } from 'react';
