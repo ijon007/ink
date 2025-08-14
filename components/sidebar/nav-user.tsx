@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronUp, LogOut, User } from 'lucide-react';
+import { ChevronUp, Plus, Settings} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -9,6 +9,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -17,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import InviteDialog from './settings/invite-dialog';
 
 export function NavUser({
   user,
@@ -48,8 +50,8 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            align="center"
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            align="start"
+            className="w-[300px] rounded-lg"
             side={isMobile ? 'bottom' : 'top'}
             sideOffset={4}
           >
@@ -65,15 +67,40 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuGroup className='flex flex-row items-center justify-start gap-2'>
+              <DropdownMenuItem className="cursor-pointer transition-all duration-300 border h-7 border-neutral-200">
+                <Settings />
+                Settings
+              </DropdownMenuItem>
+              <InviteDialog />
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <p className="text-xs text-muted-foreground font-medium px-1 mb-1">kushta.joni@gmail.com</p>
               <DropdownMenuItem className="cursor-pointer transition-all duration-300">
-                <User />
-                Account
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar className="h-5 w-5">
+                    <AvatarImage alt={user.name} src={user.avatar} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <p className="text-sm text-black">ijon&apos;s notebook</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer transition-all duration-300 hover:bg-blue-500/20">
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <div className="flex flex-row items-center justify-center size-5">
+                    <Plus className="size-4 text-blue-500 font-semibold" />
+                  </div>
+                  <p className="text-sm text-blue-500 font-semibold">New notebook</p>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer transition-all duration-300">
-              <LogOut />
-              Log out
+              <span className="font-semibold text-muted-foreground">Add a new account</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer transition-all duration-300 text-red-500 hover:text-red-500">
+              <span className="text-red-500 font-semibold">Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
