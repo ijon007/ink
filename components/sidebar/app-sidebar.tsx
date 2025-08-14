@@ -27,9 +27,7 @@ const data = {
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },
-  publishedNotes: [
-    
-  ],
+  publishedNotes: [],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -54,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="bg-neutral-100">
         <NotesSection />
-        <PublishedNotes projects={data.publishedNotes} />
+        <PublishedNotes />
       </SidebarContent>
       <SidebarFooter className='bg-neutral-100'>
         <NavUser user={data.user} />

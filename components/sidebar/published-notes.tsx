@@ -1,12 +1,7 @@
 'use client';
 
-import {
-  Folder,
-  type LucideIcon,
-  MoreHorizontal,
-  Share,
-  Trash2,
-} from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { Folder, MoreHorizontal, Share, Trash2 } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -24,19 +19,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useNotesStore } from '@/lib/stores/notes-store';
 
-export function PublishedNotes({
-  projects,
-}: {
-  projects: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
-}) {
+export function PublishedNotes() {
   const { isMobile } = useSidebar();
+  const { notes } = useNotesStore();
 
-  if (projects.length === 0) {
+  const publishedNotes = notes.filter((n) => n.isPublished && n.publishedUrl);
+
+  if (publishedNotes.length === 0) {
     return (
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel>Published</SidebarGroupLabel>
@@ -53,46 +44,23 @@ export function PublishedNotes({
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Published</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton
-              asChild
-              className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
-            >
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
-            </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align={isMobile ? 'end' : 'start'}
-                className="w-48"
-                side={isMobile ? 'bottom' : 'right'}
+        {publishedNotes.map((item) => {
+          const IconComp = (LucideIcons as Record<string, any>)[item.icon] || Folder;
+          return (
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton
+                asChild
+                className="rounded-md transition-all duration-300 hover:bg-neutral-200/50"
               >
-                <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Share className="text-muted-foreground" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
+                <a href={item.publishedUrl!} className="flex w-full items-center gap-2">
+                  <IconComp className="size-4" />
+                  <span className="truncate">{item.title}</span>
+                  <span className="ml-auto h-2 w-2 rounded-full bg-green-500" aria-label="Published" />
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );

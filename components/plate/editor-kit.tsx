@@ -31,6 +31,7 @@ import { SlashKit } from '@/components/plate/slash-kit';
 import { SuggestionKit } from '@/components/plate/suggestion-kit';
 import { TableKit } from '@/components/plate/table-kit';
 import { ToggleKit } from '@/components/plate/toggle-kit';
+import { NewPageKit } from '@/components/plate/new-page-kit';
 
 export const EditorKit = [
   // Elements
@@ -47,7 +48,7 @@ export const EditorKit = [
   ...LinkKit,
   ...MentionKit,
   ...FormKit,
-
+  ...NewPageKit,
   // Marks
   ...BaseBasicMarksKit,
   ...FontKit,
