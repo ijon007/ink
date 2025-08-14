@@ -6,30 +6,10 @@ import { Eye, Pencil, Users, Mail } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import {
-    MultiSelector,
-    MultiSelectorTrigger,
-    MultiSelectorInput,
-    MultiSelectorContent,
-    MultiSelectorList,
-    MultiSelectorItem,
-} from "@/components/ui/multi-select";
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 
 const InviteDialog = () => {
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
-    
-  // Mock email suggestions - in a real app, this would come from an API
-  const mockEmails = [
-    { id: 1, name: 'Johan Gjinko', email: 'johan@example.com', avatar: 'J' },
-    { id: 2, name: 'Keidi Beshiri', email: 'keidi@example.com', avatar: 'K' },
-    { id: 3, name: 'Helio Gato', email: 'helio@example.com', avatar: 'H' },
-  ];
-
-  const handleValuesChange = (values: string[]) => {
-    setSelectedEmails(values);
-  };
 
   const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
