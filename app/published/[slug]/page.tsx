@@ -19,6 +19,8 @@ async function getPublishedNote(slug: string) {
   return {
     id: noteId,
     title: "Sample Published Note",
+    icon: 'FileText',
+    iconColor: 'gray',
     content: JSON.stringify([
       {
         type: 'p',

@@ -2,14 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface PublishSettings {
-  siteTitle: string;
-  siteDescription: string;
-  customDomain: string;
-  isPasswordProtected: boolean;
-  password: string;
-  allowComments: boolean;
+  editable: boolean;
   showLastUpdated: boolean;
-  customCSS: string;
 }
 
 export interface Note {

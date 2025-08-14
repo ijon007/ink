@@ -3,12 +3,15 @@
 import { useMemo } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, MessageCircle, Eye } from 'lucide-react'
+import { ICON_MAP } from '@/lib/icons'
 import { formatDistanceToNow } from 'date-fns'
 
 interface PublishedNote {
   id: string
   title: string
   content: string
+  icon?: string
+  iconColor?: string
   publishSettings?: {
     siteTitle: string
     siteDescription: string
@@ -120,9 +123,19 @@ export function PublishedNoteView({ note }: PublishedNoteViewProps) {
         <div className="container mx-auto px-4 py-6 max-w-4xl">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight mb-2">
-                {note.publishSettings?.siteTitle || note.title}
-              </h1>
+              <div className="flex items-center gap-3 mb-2">
+                {note.icon && ICON_MAP[note.icon] ? (
+                  <div className="rounded-md border bg-card p-2">
+                    {(() => {
+                      const IconComp = ICON_MAP[note.icon!]
+                      return <IconComp className="h-6 w-6" />
+                    })()}
+                  </div>
+                ) : null}
+                <h1 className="text-3xl font-bold tracking-tight">
+                  {note.title}
+                </h1>
+              </div>
               {note.publishSettings?.siteDescription && (
                 <p className="text-muted-foreground text-lg">
                   {note.publishSettings.siteDescription}

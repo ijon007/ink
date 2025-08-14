@@ -9,7 +9,7 @@ import { Home, FileText } from "lucide-react"
 import { cn, getIconColorClasses } from "@/lib/utils"
 import { useNotesStore } from "@/lib/stores/notes-store"
 import * as LucideIcons from 'lucide-react'
-import { PublishDropdown } from "./publish-dropdown"
+import { PublishDropdown } from "../published/publish-dropdown"
 import Preview from "../notes/preview"
 
 const PageBreadcrumb = () => {
