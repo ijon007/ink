@@ -1,0 +1,15 @@
+{
+  "untitled-note-m1czo5": {
+    "id": "note-1755101863311-svqm1czo5",
+    "title": "Untitled Note",
+    "content": "[{\"children\":[{\"text\":\"ok\"}],\"type\":\"p\",\"id\":\"OlX_OazFlD\"},{\"type\":\"p\",\"id\":\"n7G3wjIDge\",\"children\":[{\"text\":\"\"}]},{\"children\":[{\"text\":\"\"}],\"type\":\"form-textarea\",\"label\":\"Text Area\",\"placeholder\":\"Enter text...\",\"required\":false,\"rows\":4,\"id\":\"Vk-6Vjnby6\"},{\"children\":[{\"text\":\"yeyeyeyeyedd\"}],\"type\":\"p\",\"id\":\"uo7npOWxOn\"},{\"type\":\"p\",\"id\":\"mhecjAwMFH\",\"children\":[{\"text\":\"ddd\"}]}]",
+    "icon": "Music",
+    "iconColor": "pink",
+    "publishSettings": {
+      "showLastUpdated": true,
+      "editable": false
+    },
+    "updatedAt": "2025-08-14T00:31:19.829Z",
+    "publishedUrl": "http://localhost:3000/published/untitled-note-m1czo5"
+  }
+}

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { savePublishedNote } from '@/lib/published-store'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,15 +12,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate URL based on settings
-    const slug = publishSettings.siteTitle
+    // Generate URL based on settings with safe fallbacks
+    const siteTitle: string = (publishSettings?.siteTitle || noteContent?.title || 'untitled') as string
+    const slug = siteTitle
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '') || 'untitled'
-    
-    const publishedUrl = publishSettings.customDomain 
-      ? `https://${publishSettings.customDomain}`
-      : `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/published/${slug}-${noteId.slice(-6)}`
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const customDomain = (publishSettings?.customDomain || '').toString().trim()
+    const slugWithId = `${slug}-${noteId.slice(-6)}`
+    const publishedUrl = customDomain
+      ? `https://${customDomain}`
+      : `${baseUrl}/published/${slugWithId}`
 
     // In a real implementation, you would:
     // 1. Store the published note in a database
@@ -27,7 +32,19 @@ export async function POST(request: NextRequest) {
     // 3. Deploy to CDN/hosting service
     // 4. Handle custom domain setup
 
-    // For now, we'll simulate the process
+    // For now, we'll simulate the process and store in-memory for retrieval
+    await savePublishedNote(slugWithId, {
+      id: noteId,
+      title: noteContent?.title || siteTitle,
+      content: noteContent?.content || '',
+      icon: noteContent?.icon,
+      iconColor: noteContent?.iconColor,
+      publishSettings: publishSettings,
+      updatedAt: noteContent?.updatedAt || new Date().toISOString(),
+      publishedUrl,
+    })
+
+    // Simulate async work
     await new Promise(resolve => setTimeout(resolve, 1500))
 
     return NextResponse.json({

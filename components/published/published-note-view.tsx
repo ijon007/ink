@@ -125,7 +125,7 @@ export function PublishedNoteView({ note }: PublishedNoteViewProps) {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 {note.icon && ICON_MAP[note.icon] ? (
-                  <div className="rounded-md border bg-card p-2">
+                  <div className="rounded-md bg-card p-2">
                     {(() => {
                       const IconComp = ICON_MAP[note.icon!]
                       return <IconComp className="h-6 w-6" />
@@ -142,10 +142,6 @@ export function PublishedNoteView({ note }: PublishedNoteViewProps) {
                 </p>
               )}
             </div>
-            <Badge variant="secondary" className="flex items-center gap-1">
-              <Eye className="h-3 w-3" />
-              Published
-            </Badge>
           </div>
           
           {note.publishSettings?.showLastUpdated && (
@@ -167,27 +163,6 @@ export function PublishedNoteView({ note }: PublishedNoteViewProps) {
           </div>
         </article>
       </main>
-
-      {/* Comments Section */}
-      {note.publishSettings?.allowComments && (
-        <section className="border-t bg-card/30">
-          <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <div className="flex items-center gap-2 mb-6">
-              <MessageCircle className="h-5 w-5" />
-              <h2 className="text-xl font-semibold">Comments</h2>
-            </div>
-            
-            <div className="rounded-lg border bg-card p-6 text-center">
-              <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">
-                Comments functionality would be implemented here.
-                <br />
-                This could integrate with services like Disqus, Utterances, or a custom solution.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Footer */}
       <footer className="border-t bg-card/50">

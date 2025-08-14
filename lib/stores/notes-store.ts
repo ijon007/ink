@@ -113,6 +113,7 @@ export const useNotesStore = create<NotesStore>()(
                 content: note.content,
                 icon: note.icon,
                 iconColor: note.iconColor,
+                updatedAt: note.updatedAt,
               }
             }),
           });
