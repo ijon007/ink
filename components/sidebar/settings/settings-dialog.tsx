@@ -2,13 +2,18 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { Settings, Bell, Globe, Users, Brain, Shapes } from 'lucide-react';
+import { Settings, Bell, Globe, Users, Brain, Shapes, MoreHorizontal, LogOut, Hand, CheckCircle, XCircle } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import InviteDialog from './invite-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const SettingsDialog = () => {
   const [activeSection, setActiveSection] = useState('general');
@@ -20,6 +25,175 @@ const SettingsDialog = () => {
     { id: 'people', label: 'People', icon: Users },
     { id: 'public', label: 'Public pages', icon: Globe },
     { id: 'ai', label: 'Ink AI', icon: Brain },
+  ];
+
+  const workspaceUsers = [
+    {
+      id: 1,
+      name: 'IjonK4',
+      email: 'kushta.joni@gmail.com',
+      avatar: 'https://github.com/shadcn.png',
+      avatarFallback: 'CN',
+      accessLevel: 'Admin',
+      accessLevelColor: 'bg-blue-100 text-blue-800',
+      pages: 'All pages',
+      canUpgrade: false,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Dashboard', access: 'Full', lastSeen: '2 hours ago' },
+        { name: 'Notes', access: 'Full', lastSeen: '1 day ago' },
+        { name: 'Settings', access: 'Full', lastSeen: '3 days ago' },
+        { name: 'Analytics', access: 'Full', lastSeen: '1 week ago' },
+        { name: 'User Management', access: 'Full', lastSeen: '2 weeks ago' }
+      ]
+    },
+    {
+      id: 2,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      avatar: '',
+      avatarFallback: 'JD',
+      accessLevel: 'Editor',
+      accessLevelColor: 'bg-green-100 text-green-800',
+      pages: 'Project notes, Shared docs',
+      canUpgrade: true,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Dashboard', access: 'View', lastSeen: '1 day ago' },
+        { name: 'Notes', access: 'Full', lastSeen: '2 days ago' },
+        { name: 'Project Docs', access: 'Full', lastSeen: '3 days ago' },
+        { name: 'Shared Notes', access: 'Full', lastSeen: '1 week ago' },
+        { name: 'Settings', access: 'View', lastSeen: 'Never' }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Jane Smith',
+      email: 'jane.smith@example.com',
+      avatar: '',
+      avatarFallback: 'JS',
+      accessLevel: 'Viewer',
+      accessLevelColor: 'bg-gray-100 text-gray-800',
+      pages: 'Public docs only',
+      canUpgrade: true,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Dashboard', access: 'View', lastSeen: '3 days ago' },
+        { name: 'Public Notes', access: 'View', lastSeen: '1 week ago' },
+        { name: 'Shared Docs', access: 'View', lastSeen: '2 weeks ago' }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Mike Johnson',
+      email: 'mike.johnson@example.com',
+      avatar: '',
+      avatarFallback: 'MJ',
+      accessLevel: 'Pending',
+      accessLevelColor: 'bg-yellow-100 text-yellow-800',
+      pages: '-',
+      canUpgrade: false,
+      canRemove: false,
+      isPending: true,
+      pageAccess: []
+    }
+  ];
+
+  const projectUsers = [
+    {
+      id: 1,
+      name: 'IjonK4',
+      email: 'kushta.joni@gmail.com',
+      avatar: 'https://github.com/shadcn.png',
+      avatarFallback: 'CN',
+      accessLevel: 'Admin',
+      accessLevelColor: 'bg-blue-100 text-blue-800',
+      pages: 'All project pages',
+      canUpgrade: false,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Project Overview', access: 'Full', lastSeen: '1 hour ago' },
+        { name: 'Tasks', access: 'Full', lastSeen: '3 hours ago' },
+        { name: 'Documents', access: 'Full', lastSeen: '1 day ago' },
+        { name: 'Team Chat', access: 'Full', lastSeen: '2 days ago' }
+      ]
+    },
+    {
+      id: 2,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      avatar: '',
+      avatarFallback: 'JD',
+      accessLevel: 'Editor',
+      accessLevelColor: 'bg-green-100 text-green-800',
+      pages: 'Tasks, Documents',
+      canUpgrade: true,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Project Overview', access: 'View', lastSeen: '2 days ago' },
+        { name: 'Tasks', access: 'Full', lastSeen: '1 day ago' },
+        { name: 'Documents', access: 'Full', lastSeen: '3 days ago' },
+        { name: 'Team Chat', access: 'View', lastSeen: '1 week ago' }
+      ]
+    }
+  ];
+
+  const personalUsers = [
+    {
+      id: 1,
+      name: 'IjonK4',
+      email: 'kushta.joni@gmail.com',
+      avatar: 'https://github.com/shadcn.png',
+      avatarFallback: 'CN',
+      accessLevel: 'Owner',
+      accessLevelColor: 'bg-purple-100 text-purple-800',
+      pages: 'All personal pages',
+      canUpgrade: true,
+      canRemove: true,
+      isPending: false,
+      pageAccess: [
+        { name: 'Personal Notes', access: 'Full', lastSeen: '30 min ago' },
+        { name: 'Bookmarks', access: 'Full', lastSeen: '2 hours ago' },
+        { name: 'Settings', access: 'Full', lastSeen: '1 day ago' }
+      ]
+    }
+  ];
+
+  const notificationTypes = [
+    { id: 'new-comments', label: 'New comments', description: 'When someone comments on your notes' },
+    { id: 'mentions', label: 'Mentions', description: 'When someone mentions you in a note' },
+    { id: 'collaboration-invites', label: 'Collaboration invites', description: 'When someone invites you to collaborate' },
+    { id: 'note-updates', label: 'Note updates', description: 'When shared notes are updated' },
+    { id: 'security-alerts', label: 'Security alerts', description: 'Important security notifications' }
+  ];
+
+  const languages = [
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Español' },
+    { value: 'fr', label: 'Français' },
+    { value: 'de', label: 'Deutsch' },
+    { value: 'it', label: 'Italiano' },
+    { value: 'pt', label: 'Português' },
+    { value: 'ja', label: '日本語' },
+    { value: 'ko', label: '한국어' },
+    { value: 'zh', label: '中文' }
+  ];
+
+  const publicThemes = [
+    { value: 'light', label: 'Light' },
+    { value: 'dark', label: 'Dark' },
+    { value: 'system', label: 'System' }
+  ];
+
+  const fontSizes = [
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large' }
   ];
 
   const renderSectionContent = () => {
@@ -67,15 +241,11 @@ const SettingsDialog = () => {
                     <SelectValue placeholder="English" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="es">Español</SelectItem>
-                    <SelectItem value="fr">Français</SelectItem>
-                    <SelectItem value="de">Deutsch</SelectItem>
-                    <SelectItem value="it">Italiano</SelectItem>
-                    <SelectItem value="pt">Português</SelectItem>
-                    <SelectItem value="ja">日本語</SelectItem>
-                    <SelectItem value="ko">한국어</SelectItem>
-                    <SelectItem value="zh">中文</SelectItem>
+                    {languages.map((language) => (
+                      <SelectItem key={language.value} value={language.value}>
+                        {language.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -132,9 +302,11 @@ const SettingsDialog = () => {
                       <SelectValue placeholder="Select theme" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      {publicThemes.map((theme) => (
+                        <SelectItem key={theme.value} value={theme.value}>
+                          {theme.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -145,9 +317,11 @@ const SettingsDialog = () => {
                       <SelectValue placeholder="Select font size" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="small">Small</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="large">Large</SelectItem>
+                      {fontSizes.map((size) => (
+                        <SelectItem key={size.value} value={size.value}>
+                          {size.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -173,45 +347,15 @@ const SettingsDialog = () => {
                 <div className="mb-4 mt-2">
                   <h4 className="text-lg font-medium">Notification Types</h4>
                   
-                  <div className="flex items-center justify-between py-2">
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm font-medium">New comments</Label>
-                      <p className="text-sm text-muted-foreground">When someone comments on your notes</p>
+                  {notificationTypes.map((notification) => (
+                    <div key={notification.id} className="flex items-center justify-between py-2">
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-sm font-medium">{notification.label}</Label>
+                        <p className="text-sm text-muted-foreground">{notification.description}</p>
+                      </div>
+                      <Switch />
                     </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between py-2">
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm font-medium">Mentions</Label>
-                      <p className="text-sm text-muted-foreground">When someone mentions you in a note</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between py-2">
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm font-medium">Collaboration invites</Label>
-                      <p className="text-sm text-muted-foreground">When someone invites you to collaborate</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between py-2">
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm font-medium">Note updates</Label>
-                      <p className="text-sm text-muted-foreground">When shared notes are updated</p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between py-2">
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm font-medium">Security alerts</Label>
-                      <p className="text-sm text-muted-foreground">Important security notifications</p>
-                    </div>
-                    <Switch />
-                  </div>
+                  ))}
                 </div>
 
                 <div className="mt-2"> 
@@ -232,7 +376,7 @@ const SettingsDialog = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Privacy & Security</h3>
+              <h3 className="text-lg font-semibold mb-4">Connections</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -257,33 +401,362 @@ const SettingsDialog = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Workspace</h3>
+              <h3 className="text-lg font-semibold mb-4">People</h3>
               <div className="space-y-4">
-                <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium">Default notebook</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select default notebook" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="personal">Personal</SelectItem>
-                      <SelectItem value="work">Work</SelectItem>
-                      <SelectItem value="school">School</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="flex flex-row items-center justify-between gap-1">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-medium">Invite by link</span>
+                    <p className="text-xs text-muted-foreground">Invite people to your workspace</p>
+                  </div>
+                  <Button variant="outline" size="sm">Copy invite link</Button>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium">Auto-save interval</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select interval" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="30">30 seconds</SelectItem>
-                      <SelectItem value="60">1 minute</SelectItem>
-                      <SelectItem value="300">5 minutes</SelectItem>
-                    </SelectContent>
-                  </Select>
+
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-medium">Notebook Access</h3>
+                    <InviteDialog settings={true} />
+                  </div>
+                  <Tabs defaultValue="main" className="w-full">
+                    <div className="flex items-center justify-between">
+                      <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="main">ijon's notebook</TabsTrigger>
+                        <TabsTrigger value="project">Project Alpha</TabsTrigger>
+                        <TabsTrigger value="caly">caly</TabsTrigger>
+                      </TabsList>
+                    </div>
+
+                    <TabsContent value="main" className="space-y-4">
+                      <div className="border rounded-lg">
+                        <div className="overflow-x-auto">
+                          <div className="divide-y">
+                            {workspaceUsers.map((user) => (
+                              <Collapsible key={user.id} className="group">
+                                <CollapsibleTrigger asChild>
+                                  <div className="flex items-center justify-between p-3 hover:bg-muted/30 cursor-pointer transition-colors">
+                                    <div className="flex items-center gap-3 flex-1">
+                                      <Avatar className="size-6">
+                                        {user.avatar && <AvatarImage src={user.avatar} />}
+                                        <AvatarFallback className="text-xs">{user.avatarFallback}</AvatarFallback>
+                                      </Avatar>
+                                      <div className="flex flex-col">
+                                        <span className="text-xs font-medium">{user.name}</span>
+                                        <span className="text-xs text-muted-foreground">{user.email}</span>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3">
+                                      <Badge variant="outline" className={`text-xs px-2 ${user.accessLevelColor}`}>
+                                        {user.accessLevel}
+                                      </Badge>
+                                      
+                                      <div className="text-xs text-muted-foreground w-32 truncate">
+                                        {user.pages}
+                                      </div>
+                                      
+                                      <div className="flex items-center gap-2">
+                                        <DropdownMenu>
+                                          <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-6 w-6 p-0">
+                                              <span className="sr-only">Open menu</span>
+                                              <MoreHorizontal className="h-3 w-3" />
+                                            </Button>
+                                          </DropdownMenuTrigger>
+                                          <DropdownMenuContent align="end">
+                                            {user.isPending ? (
+                                              <>
+                                                <DropdownMenuItem onClick={() => alert('Accept clicked')}>
+                                                  <CheckCircle className="size-4 text-green-600" />
+                                                  <span className='text-xs text-green-600 hover:text-green-600'>
+                                                    Accept
+                                                  </span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => alert('Decline clicked')}>
+                                                  <XCircle className="size-4 text-red-600" />
+                                                  <span className='text-xs text-red-600 hover:text-red-600'>
+                                                    Decline
+                                                  </span>
+                                                </DropdownMenuItem>
+                                              </>
+                                            ) : (
+                                              <>
+                                                {user.canUpgrade && user.accessLevel === 'Viewer' && (
+                                                  <DropdownMenuItem onClick={() => alert('Upgrade to Editor clicked')} className="text-xs">
+                                                    Upgrade to Editor
+                                                  </DropdownMenuItem>
+                                                )}
+                                                {user.canUpgrade && user.accessLevel !== 'Admin' && (
+                                                  <DropdownMenuItem onClick={() => alert('Upgrade to Admin clicked')} className="text-xs">
+                                                    Upgrade to Admin
+                                                  </DropdownMenuItem>
+                                                )}
+                                                {user.canRemove && (
+                                                  <DropdownMenuItem onClick={() => alert('Remove clicked')} className="flex items-center gap-2">
+                                                    <Hand className="size-4 -rotate-32 text-red-600" />
+                                                    <span className='text-xs text-red-600 hover:text-red-600'>Remove from workspace</span>
+                                                  </DropdownMenuItem>
+                                                )}
+                                              </>
+                                            )}
+                                          </DropdownMenuContent>
+                                        </DropdownMenu>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CollapsibleTrigger>
+                                
+                                <CollapsibleContent>
+                                  <div className="px-3 pb-3 border-t bg-muted/20">
+                                    <div className="pt-3">
+                                      <h5 className="text-xs font-medium text-muted-foreground mb-3">Page Access Details</h5>
+                                      {user.pageAccess.length > 0 ? (
+                                        <div className="border rounded-md overflow-hidden">
+                                          <div className="bg-muted/50 border-b">
+                                            <div className="grid grid-cols-3 gap-4 px-3 py-2 text-xs font-medium text-muted-foreground">
+                                              <div>Page Name</div>
+                                              <div>Last Seen</div>
+                                              <div>Access Level</div>
+                                            </div>
+                                          </div>
+                                          <div className="divide-y">
+                                            {user.pageAccess.map((page, index) => (
+                                              <div key={index} className="grid grid-cols-3 gap-4 px-3 py-2 text-xs hover:bg-muted/30">
+                                                <div className="font-medium text-foreground">{page.name}</div>
+                                                <div className="text-muted-foreground">{page.lastSeen}</div>
+                                                <div>
+                                                  <Badge 
+                                                    variant="outline" 
+                                                    className={cn(
+                                                      "text-xs px-2 py-0.5",
+                                                      page.access === 'Full' ? "bg-blue-50 text-blue-700 border-blue-200" : "bg-gray-50 text-gray-700 border-gray-200"
+                                                    )}
+                                                  >
+                                                    {page.access}
+                                                  </Badge>
+                                                </div>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div className="text-xs text-muted-foreground italic py-4 text-center">
+                                          No pages assigned yet
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="project" className="space-y-4">
+                      <div className="border rounded-lg">
+                        <div className="overflow-x-auto">
+                          <div className="divide-y">
+                            {projectUsers.map((user) => (
+                              <Collapsible key={user.id} className="group">
+                                <CollapsibleTrigger asChild>
+                                  <div className="flex items-center justify-between p-3 hover:bg-muted/30 cursor-pointer transition-colors">
+                                    <div className="flex items-center gap-3 flex-1">
+                                      <Avatar className="size-6">
+                                        {user.avatar && <AvatarImage src={user.avatar} />}
+                                        <AvatarFallback className="text-xs">{user.avatarFallback}</AvatarFallback>
+                                      </Avatar>
+                                      <div className="flex flex-col">
+                                        <span className="text-xs font-medium">{user.name}</span>
+                                        <span className="text-xs text-muted-foreground">{user.email}</span>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3">
+                                      <Badge variant="outline" className={`text-xs px-2 ${user.accessLevelColor}`}>
+                                        {user.accessLevel}
+                                      </Badge>
+                                      
+                                      <div className="text-xs text-muted-foreground w-32 truncate">
+                                        {user.pages}
+                                      </div>
+                                      
+                                      <div className="flex items-center gap-2">
+                                        <DropdownMenu>
+                                          <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-6 w-6 p-0">
+                                              <span className="sr-only">Open menu</span>
+                                              <MoreHorizontal className="h-3 w-3" />
+                                            </Button>
+                                          </DropdownMenuTrigger>
+                                          <DropdownMenuContent align="end">
+                                            {user.canUpgrade && user.accessLevel !== 'Admin' && (
+                                              <DropdownMenuItem onClick={() => alert('Upgrade to Admin clicked')} className="text-xs">
+                                                Upgrade to Admin
+                                              </DropdownMenuItem>
+                                            )}
+                                            {user.canRemove && (
+                                              <DropdownMenuItem onClick={() => alert('Remove clicked')} className="flex items-center gap-2">
+                                                <Hand className="size-4 -rotate-32 text-red-600" />
+                                                <span className='text-xs text-red-600 hover:text-red-600'>Remove from project</span>
+                                              </DropdownMenuItem>
+                                            )}
+                                          </DropdownMenuContent>
+                                        </DropdownMenu>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CollapsibleTrigger>
+                                
+                                <CollapsibleContent>
+                                  <div className="px-3 pb-3 border-t bg-muted/20">
+                                    <div className="pt-3">
+                                      <h5 className="text-xs font-medium text-muted-foreground mb-3">Page Access Details</h5>
+                                      {user.pageAccess.length > 0 ? (
+                                        <div className="border rounded-md overflow-hidden">
+                                          <div className="bg-muted/50 border-b">
+                                            <div className="grid grid-cols-3 gap-4 px-3 py-2 text-xs font-medium text-muted-foreground">
+                                              <div>Page Name</div>
+                                              <div>Last Seen</div>
+                                              <div>Access Level</div>
+                                            </div>
+                                          </div>
+                                          <div className="divide-y">
+                                            {user.pageAccess.map((page, index) => (
+                                              <div key={index} className="grid grid-cols-3 gap-4 px-3 py-2 text-xs hover:bg-muted/30">
+                                                <div className="font-medium text-foreground">{page.name}</div>
+                                                <div className="text-muted-foreground">{page.lastSeen}</div>
+                                                <div>
+                                                  <Badge 
+                                                    variant="outline" 
+                                                    className={cn(
+                                                      "text-xs px-2 py-0.5",
+                                                      page.access === 'Full' ? "bg-blue-50 text-blue-700 border-blue-200" : "bg-gray-50 text-gray-700 border-gray-200"
+                                                    )}
+                                                  >
+                                                    {page.access}
+                                                  </Badge>
+                                                </div>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div className="text-xs text-muted-foreground italic py-4 text-center">
+                                          No pages assigned yet
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="caly" className="space-y-4">
+                      <div className="border rounded-lg">
+                        <div className="overflow-x-auto">
+                          <div className="divide-y">
+                            {personalUsers.map((user) => (
+                              <Collapsible key={user.id} className="group">
+                                <CollapsibleTrigger asChild>
+                                  <div className="flex items-center justify-between p-3 hover:bg-muted/30 cursor-pointer transition-colors">
+                                    <div className="flex items-center gap-3 flex-1">
+                                      <Avatar className="size-6">
+                                        {user.avatar && <AvatarImage src={user.avatar} />}
+                                        <AvatarFallback className="text-xs">{user.avatarFallback}</AvatarFallback>
+                                      </Avatar>
+                                      <div className="flex flex-col">
+                                        <span className="text-xs font-medium">{user.name}</span>
+                                        <span className="text-xs text-muted-foreground">{user.email}</span>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3">
+                                      <Badge variant="outline" className={`text-xs px-2 ${user.accessLevelColor}`}>
+                                        {user.accessLevel}
+                                      </Badge>
+                                      
+                                      <div className="text-xs text-muted-foreground w-32 truncate">
+                                        {user.pages}
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <DropdownMenu>
+                                          <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-6 w-6 p-0">
+                                              <span className="sr-only">Open menu</span>
+                                              <MoreHorizontal className="h-3 w-3" />
+                                            </Button>
+                                          </DropdownMenuTrigger>
+                                          <DropdownMenuContent align="end">
+                                            {user.canUpgrade && user.accessLevel !== 'Admin' && (
+                                              <DropdownMenuItem onClick={() => alert('Upgrade to Admin clicked')} className="text-xs">
+                                                Upgrade to Admin
+                                              </DropdownMenuItem>
+                                            )}
+                                            {user.canRemove && (
+                                              <DropdownMenuItem onClick={() => alert('Remove clicked')} className="flex items-center gap-2">
+                                                <Hand className="size-4 -rotate-32 text-red-600" />
+                                                <span className='text-xs text-red-600 hover:text-red-600'>Remove from project</span>
+                                              </DropdownMenuItem>
+                                            )}
+                                          </DropdownMenuContent>
+                                        </DropdownMenu>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CollapsibleTrigger>
+                                
+                                <CollapsibleContent>
+                                  <div className="px-3 pb-3 border-t bg-muted/20">
+                                    <div className="pt-3">
+                                      <h5 className="text-xs font-medium text-muted-foreground mb-3">Page Access Details</h5>
+                                      {user.pageAccess.length > 0 ? (
+                                        <div className="border rounded-md overflow-hidden">
+                                          <div className="bg-muted/50 border-b">
+                                            <div className="grid grid-cols-3 gap-4 px-3 py-2 text-xs font-medium text-muted-foreground">
+                                              <div>Page Name</div>
+                                              <div>Last Seen</div>
+                                              <div>Access Level</div>
+                                            </div>
+                                          </div>
+                                          <div className="divide-y">
+                                            {user.pageAccess.map((page, index) => (
+                                              <div key={index} className="grid grid-cols-3 gap-4 px-3 py-2 text-xs hover:bg-muted/30">
+                                                <div className="font-medium text-foreground">{page.name}</div>
+                                                <div className="text-muted-foreground">{page.lastSeen}</div>
+                                                <div>
+                                                  <Badge 
+                                                    variant="outline" 
+                                                    className={cn(
+                                                      "text-xs px-2 py-0.5",
+                                                      page.access === 'Full' ? "bg-blue-50 text-blue-700 border-blue-200" : "bg-gray-50 text-gray-700 border-gray-200"
+                                                    )}
+                                                  >
+                                                    {page.access}
+                                                  </Badge>
+                                                </div>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div className="text-xs text-muted-foreground italic py-4 text-center">
+                                          No pages assigned yet
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </div>
               </div>
             </div>

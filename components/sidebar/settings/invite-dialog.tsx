@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 
-const InviteDialog = () => {
+const InviteDialog = ({ settings = false }: { settings?: boolean }) => {
   const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
 
   const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,13 +20,20 @@ const InviteDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <DropdownMenuItem 
-          className="cursor-pointer transition-all duration-300 border h-7 border-neutral-200"
-          onSelect={(e) => e.preventDefault()}
-        >
-            <Users />
-            Invite people
-        </DropdownMenuItem>
+        {settings ? (
+            <Button size="sm" className='cursor-pointer py-0 px-6'>
+                <Users />
+                Add people
+            </Button>
+        ) : (
+            <DropdownMenuItem 
+              className="cursor-pointer transition-all duration-300 border h-7 border-neutral-200"
+              onSelect={(e) => e.preventDefault()}
+            >
+                <Users />
+                Invite people
+            </DropdownMenuItem>
+        )}
       </DialogTrigger>
       <DialogContent className='px-4 py-3'>
         <DialogHeader className='gap-0'>
