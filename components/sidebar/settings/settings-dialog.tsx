@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Switch } from '@/components/ui/switch';
 
 const SettingsDialog = () => {
   const [activeSection, setActiveSection] = useState('general');
@@ -30,22 +31,55 @@ const SettingsDialog = () => {
               <h3 className="text-xl font-semibold mb-6">Account</h3>
               <div className="flex items-start gap-6">
                 <Avatar className="size-20">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 
                 <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium">Preferred name</Label>
-                    <Input 
-                        placeholder="Enter your preferred name" 
-                        defaultValue="IjonK4"
-                        className="max-w-xs"
-                    />
+                  <Label className="text-sm font-medium">Preferred name</Label>
+                  <Input 
+                    placeholder="Enter your preferred name" 
+                    defaultValue="IjonK4"
+                    className="max-w-xs"
+                  />
                 </div>
               </div>
             </div>
 
             <div className="border-t" />
+
+            <div className="mb-12">
+              <h3 className="text-lg font-semibold mb-3">Preferences</h3>  
+              <div className="flex flex-row items-center justify-between gap-2">
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm font-medium">Theme</Label>
+                  <p className="text-sm text-muted-foreground">Change the appearance of your workspace.</p>
+                </div>
+                <Switch />
+              </div>
+              <div className="flex flex-row items-center justify-between gap-2 mt-2">
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm font-medium">Language</Label>
+                  <p className="text-sm text-muted-foreground">Choose your preferred language.</p>
+                </div>
+                <Select>
+                  <SelectTrigger className="w-32">
+                    <SelectValue placeholder="English" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                    <SelectItem value="fr">Français</SelectItem>
+                    <SelectItem value="de">Deutsch</SelectItem>
+                    <SelectItem value="it">Italiano</SelectItem>
+                    <SelectItem value="pt">Português</SelectItem>
+                    <SelectItem value="ja">日本語</SelectItem>
+                    <SelectItem value="ko">한국어</SelectItem>
+                    <SelectItem value="zh">中文</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             <div>
               <h3 className="text-lg font-semibold">Account security</h3>
@@ -73,23 +107,12 @@ const SettingsDialog = () => {
                   </div>
                   <Button variant="outline" size="sm">Add verification method</Button>
                 </div>
-
-                <div className="flex items-center justify-between py-3">
+                <div className="flex flex-row items-center justify-between py-3">
                   <div className="flex flex-col gap-1">
-                    <Label className="text-sm font-medium">Passkeys</Label>
-                    <p className="text-sm text-muted-foreground">Securely sign-in with on-device biometric authentication.</p>
+                    <Label className="text-sm font-medium">Delete account</Label>
+                    <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data.</p>
                   </div>
-                  <Button variant="outline" size="sm">Add passkey</Button>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mt-10 mb-3">Dangerous</h3>  
-                <div className="flex flex-row items-center justify-between gap-2">
-                    <div className="flex flex-col gap-1">
-                        <Label className="text-sm font-medium">Delete account</Label>
-                        <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data.</p>
-                    </div>
-                    <Button variant="outline" size="sm" className="bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-500 w-fit">Delete account</Button> 
+                  <Button variant="outline" size="sm" className="bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-500 w-fit">Delete account</Button> 
                 </div>
               </div>
             </div>
