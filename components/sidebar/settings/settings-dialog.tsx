@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { Briefcase, Settings, Palette, Shield, Bell, Database } from 'lucide-react';
+import { Settings, Bell, Globe, Users, Brain, Shapes } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -15,11 +15,11 @@ const SettingsDialog = () => {
 
   const settingsSections = [
     { id: 'general', label: 'General', icon: Settings },
-    { id: 'preferences', label: 'Preferences', icon: Palette },
     { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'privacy', label: 'Privacy & Security', icon: Shield },
-    { id: 'workspace', label: 'Workspace', icon: Briefcase },
-    { id: 'data', label: 'Data & Storage', icon: Database },
+    { id: 'connections', label: 'Connections', icon: Shapes },
+    { id: 'people', label: 'People', icon: Users },
+    { id: 'public', label: 'Public pages', icon: Globe },
+    { id: 'ai', label: 'Ink AI', icon: Brain },
   ];
 
   const renderSectionContent = () => {
@@ -119,7 +119,7 @@ const SettingsDialog = () => {
           </div>
         );
       
-      case 'preferences':
+      case 'public':
         return (
           <div className="space-y-6">
             <div>
@@ -158,30 +158,77 @@ const SettingsDialog = () => {
 
       case 'notifications':
         return (
-          <div className="space-y-6">
+          <div className="space-y-3">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Notifications</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
+              <h3 className="text-xl font-semibold mb-6">Email Notifications</h3>
+              <div className="">
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex flex-col gap-1">
                     <Label className="text-sm font-medium">Email notifications</Label>
-                    <p className="text-xs text-muted-foreground">Receive updates via email</p>
+                    <p className="text-sm text-muted-foreground">Receive updates and alerts via email</p>
                   </div>
-                  <Button variant="outline" size="sm">Configure</Button>
+                  <Switch />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-sm font-medium">Push notifications</Label>
-                    <p className="text-xs text-muted-foreground">Receive browser notifications</p>
+
+                <div className="mb-4 mt-2">
+                  <h4 className="text-lg font-medium">Notification Types</h4>
+                  
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">New comments</Label>
+                      <p className="text-sm text-muted-foreground">When someone comments on your notes</p>
+                    </div>
+                    <Switch />
                   </div>
-                  <Button variant="outline" size="sm">Configure</Button>
+
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Mentions</Label>
+                      <p className="text-sm text-muted-foreground">When someone mentions you in a note</p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Collaboration invites</Label>
+                      <p className="text-sm text-muted-foreground">When someone invites you to collaborate</p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Note updates</Label>
+                      <p className="text-sm text-muted-foreground">When shared notes are updated</p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Security alerts</Label>
+                      <p className="text-sm text-muted-foreground">Important security notifications</p>
+                    </div>
+                    <Switch />
+                  </div>
+                </div>
+
+                <div className="mt-2"> 
+                  <div className="flex items-center justify-between py-3">
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Unsubscribe footer</Label>
+                      <p className="text-sm text-muted-foreground">Include unsubscribe link in emails</p>
+                    </div>
+                    <Button variant="outline" size="sm">Unsubscribe</Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         );
 
-      case 'privacy':
+      case 'connections':
         return (
           <div className="space-y-6">
             <div>
@@ -206,7 +253,7 @@ const SettingsDialog = () => {
           </div>
         );
 
-      case 'workspace':
+      case 'people':
         return (
           <div className="space-y-6">
             <div>
@@ -243,7 +290,7 @@ const SettingsDialog = () => {
           </div>
         );
 
-      case 'data':
+      case 'ai':
         return (
           <div className="space-y-6">
             <div>
