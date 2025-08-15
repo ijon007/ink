@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/sidebar';
 import InviteDialog from './settings/invite-dialog';
 import NewNotebookDialog from './settings/new-notebook-dialog';
+import SettingsDialog from './settings/settings-dialog';
 
 export function NavUser({
   user,
@@ -69,10 +70,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuGroup className='flex flex-row items-center justify-start gap-2'>
-              <DropdownMenuItem className="cursor-pointer transition-all duration-300 border h-7 border-neutral-200">
-                <Settings />
-                Settings
-              </DropdownMenuItem>
+              <SettingsDialog />
               <InviteDialog />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
