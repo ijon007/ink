@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronUp, Plus, Settings} from 'lucide-react';
+import { ChevronUp, Settings} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import InviteDialog from './settings/invite-dialog';
+import NewNotebookDialog from './settings/new-notebook-dialog';
 
 export function NavUser({
   user,
@@ -86,14 +87,7 @@ export function NavUser({
                   <p className="text-sm text-black">ijon&apos;s notebook</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer transition-all duration-300 hover:bg-blue-500/20">
-                <div className="flex flex-row items-center justify-center gap-2">
-                  <div className="flex flex-row items-center justify-center size-5">
-                    <Plus className="size-4 text-blue-500 font-semibold" />
-                  </div>
-                  <p className="text-sm text-blue-500 font-semibold">New notebook</p>
-                </div>
-              </DropdownMenuItem>
+              <NewNotebookDialog />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer transition-all duration-300">
