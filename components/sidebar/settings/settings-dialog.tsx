@@ -13,9 +13,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import InviteDialog from './invite-dialog';
+import NewModeDialog from './new-mode-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MiniLineChart } from '@/components/ui/mini-line-chart';
+import { Textarea } from '@/components/ui/textarea';
 
 interface PublishedNote {
   id: number;
@@ -37,6 +39,86 @@ interface PublishedForm {
 
 const SettingsDialog = () => {
   const [activeSection, setActiveSection] = useState('general');
+  const [aiModes, setAiModes] = useState([
+    {
+      id: 1,
+      name: 'Scientific',
+      description: 'Scientific mode for research and academic writing.',
+      iconColor: 'text-blue-600',
+      titleColor: 'text-blue-700',
+      notebooks: ['Research Notes', 'Academic Papers', 'Lab Reports']
+    },
+    {
+      id: 2,
+      name: 'Casual',
+      description: 'Casual mode for everyday writing and notes.',
+      iconColor: 'text-green-600',
+      titleColor: 'text-green-700',
+      notebooks: ['Personal Notes', 'Daily Journal', 'Quick Thoughts']
+    },
+    {
+      id: 3,
+      name: 'Shakespeare',
+      description: 'Shakespeare mode for creative and literary writing.',
+      iconColor: 'text-purple-600',
+      titleColor: 'text-purple-700',
+      notebooks: ['Creative Writing', 'Poetry', 'Stories']
+    },
+    {
+      id: 4,
+      name: 'Professional',
+      description: 'Professional mode for business and formal documents.',
+      iconColor: 'text-slate-600',
+      titleColor: 'text-slate-700',
+      notebooks: ['Business Notes', 'Meeting Notes', 'Proposals']
+    },
+    {
+      id: 5,
+      name: 'Creative',
+      description: 'Creative mode for brainstorming and ideation.',
+      iconColor: 'text-orange-600',
+      titleColor: 'text-orange-700',
+      notebooks: ['Ideas', 'Brainstorming', 'Project Planning']
+    },
+    {
+      id: 6,
+      name: 'Technical',
+      description: 'Technical mode for code and technical documentation.',
+      iconColor: 'text-indigo-600',
+      titleColor: 'text-indigo-700',
+      notebooks: ['Code Notes', 'Technical Docs', 'API Docs']
+    },
+    {
+      id: 7,
+      name: 'Academic',
+      description: 'Academic mode for scholarly writing and research.',
+      iconColor: 'text-teal-600',
+      titleColor: 'text-teal-700',
+      notebooks: ['Thesis', 'Research Papers', 'Literature Review']
+    },
+    {
+      id: 8,
+      name: 'Journalistic',
+      description: 'Journalistic mode for news and reporting.',
+      iconColor: 'text-red-600',
+      titleColor: 'text-red-700',
+      notebooks: ['News Notes', 'Interviews', 'Reports']
+    }
+  ]);
+
+  const handleCreateMode = (modeData: {
+    name: string;
+    description: string;
+    iconColor: string;
+    titleColor: string;
+    notebooks: string[];
+  }) => {
+    const newMode = {
+      id: Math.max(...aiModes.map(m => m.id)) + 1,
+      ...modeData
+    };
+    setAiModes([...aiModes, newMode]);
+  };
 
   const settingsSections = [
     { id: 'general', label: 'General', icon: Settings },
@@ -46,6 +128,8 @@ const SettingsDialog = () => {
     { id: 'public', label: 'Public pages', icon: Globe },
     { id: 'ai', label: 'Ink AI', icon: Brain },
   ];
+
+
 
   const workspaceUsers = [
     {
@@ -1021,21 +1105,92 @@ const SettingsDialog = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Data & Storage</h3>
+              <h3 className="text-lg font-semibold mb-4">Ink AI</h3>
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-sm font-medium">Export data</Label>
-                    <p className="text-xs text-muted-foreground">Download your notes and data</p>
+                <div className="flex flex-col gap-2 max-w-full">
+                  <div className="flex flex-row items-center justify-between gap-2">
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-medium">Different Modes</p>
+                      <p className="text-xs text-muted-foreground">
+                        Choose between different modes.
+                      </p>
+                    </div>
+                    <NewModeDialog onModeCreate={handleCreateMode} />
                   </div>
-                  <Button variant="outline" size="sm">Export</Button>
+                  <div className="flex gap-3 overflow-x-auto pb-2 max-w-full" style={{ scrollbarWidth: 'thin', scrollbarColor: 'hsl(var(--muted-foreground) / 0.2) transparent' }}>
+                    {aiModes.map((mode) => (
+                      <Card 
+                        key={mode.id}
+                        className="min-w-[240px] shadow-none hover:bg-muted/70 cursor-pointer border border-border hover:border-border/70 transition-colors"
+                      >
+                        <CardContent className="px-3">
+                          <CardTitle className={`flex flex-row items-center gap-2 text-sm font-medium ${mode.titleColor}`}>
+                            <Brain className={`size-3.5 ${mode.iconColor}`} />
+                            {mode.name}
+                          </CardTitle>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            {mode.description}
+                          </p>
+                          <div className="flex flex-wrap gap-1">
+                            {mode.notebooks.map((notebook, index) => (
+                              <Badge 
+                                key={index} 
+                                variant="secondary" 
+                                className="text-xs px-1.5 py-0.5 bg-muted/50 hover:bg-muted/70"
+                              >
+                                {notebook}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-sm font-medium">Storage usage</Label>
-                    <p className="text-xs text-muted-foreground">2.4 GB of 10 GB used</p>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-medium">Short or Long Answers</p>
+                  <p className="text-xs text-muted-foreground">
+                    Choose between short, medium or long answers.
+                  </p>
+                  <div className="flex flex-row gap-2 w-full">
+                    <Button variant="outline" className="w-1/3">
+                      Short
+                    </Button>
+                    <Button variant="outline" className="w-1/3">
+                      Medium
+                    </Button>
+                    <Button variant="outline" className="w-1/3">
+                      Long
+                    </Button>
                   </div>
-                  <Button variant="outline" size="sm">Manage</Button>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-medium">Custom Instructions</p>
+                  <p className="text-xs text-muted-foreground">
+                    Custom instructions for Ink AI.
+                  </p>
+                  <Textarea placeholder="Custom Instructions" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-medium">Personal API Key</p>
+                  <p className="text-xs text-muted-foreground">
+                    Your personal API key for Ink AI.
+                  </p>
+                  <Input type="text" placeholder="API Key" />
+                </div>
+                <div className="flex flex-row items-center justify-between gap-2">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-medium">Disable Ink AI</p>
+                    <p className="text-xs text-muted-foreground">
+                      Disable Ink AI.
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <Switch />
+                    <p className="text-xs text-muted-foreground">
+                      Enabled
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1057,7 +1212,7 @@ const SettingsDialog = () => {
       </DialogTrigger>
       <DialogContent className="p-0 min-w-[1200px] h-[700px]">
         <div className="flex h-full">
-          <div className="w-64 border-r bg-muted/30">
+          <div className="w-64 border-r bg-muted/30 flex-shrink-0">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">Settings</h2>
               <p className="text-sm text-muted-foreground">Manage your preferences</p>
@@ -1085,8 +1240,10 @@ const SettingsDialog = () => {
             </nav>
           </div>
 
-          <div className="flex-1 p-6 overflow-y-auto">
-            {renderSectionContent()}
+          <div className="flex-1 p-6 overflow-y-auto w-0">
+            <div className="max-w-full">
+              {renderSectionContent()}
+            </div>
           </div>
         </div>
       </DialogContent>
