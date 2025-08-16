@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { Settings, Bell, Globe, Users, Brain, Shapes, MoreHorizontal, LogOut, Hand, CheckCircle, XCircle } from 'lucide-react';
+import { Settings, Bell, Globe, Users, Brain, Shapes, MoreHorizontal, LogOut, Hand, CheckCircle, XCircle, FileText, BookOpen, HelpCircle, Wrench, ClipboardList, MessageSquare, Headphones, Lightbulb } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,26 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import InviteDialog from './invite-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { MiniLineChart } from '@/components/ui/mini-line-chart';
+
+interface PublishedNote {
+  id: number;
+  name: string;
+  description: string;
+  status: 'Published' | 'Draft';
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface PublishedForm {
+  id: number;
+  name: string;
+  description: string;
+  status: 'Published' | 'Draft';
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
 
 const SettingsDialog = () => {
   const [activeSection, setActiveSection] = useState('general');
@@ -172,6 +192,106 @@ const SettingsDialog = () => {
     { id: 'security-alerts', label: 'Security alerts', description: 'Important security notifications' }
   ];
 
+  const publicStats = [
+    {
+      id: 1,
+      label: 'Published notes',
+      value: 28,
+      color: '#3b82f6',
+      chartData: [
+        { value: 8 }, { value: 12 }, { value: 15 }, { value: 18 }, { value: 12 }, { value: 25 }, { value: 28 }
+      ]
+    },
+    {
+      id: 2,
+      label: 'Published forms',
+      value: 10,
+      color: '#10b981',
+      chartData: [
+        { value: 2 }, { value: 3 }, { value: 5 }, { value: 7 }, { value: 8 }, { value: 2 }, { value: 10 }
+      ]
+    },
+    {
+      id: 3,
+      label: 'Anyone with the link',
+      value: 100,
+      color: '#f59e0b',
+      chartData: [
+        { value: 35 }, { value: 45 }, { value: 60 }, { value: 75 }, { value: 85 }, { value: 95 }, { value: 100 }
+      ]
+    }
+  ];
+
+  const publishedNotes: PublishedNote[] = [
+    {
+      id: 1,
+      name: 'Getting Started Guide',
+      description: 'Complete guide for new users',
+      status: 'Published',
+      url: '/notes/getting-started',
+      icon: BookOpen
+    },
+    {
+      id: 2,
+      name: 'API Documentation',
+      description: 'Technical API reference',
+      status: 'Published',
+      url: '/notes/api-docs',
+      icon: FileText
+    },
+    {
+      id: 3,
+      name: 'User Manual',
+      description: 'Comprehensive user manual',
+      status: 'Draft',
+      url: '/notes/user-manual',
+      icon: HelpCircle
+    },
+    {
+      id: 4,
+      name: 'Troubleshooting',
+      description: 'Common issues and solutions',
+      status: 'Published',
+      url: '/notes/troubleshooting',
+      icon: Wrench
+    }
+  ];
+
+  const publishedForms: PublishedForm[] = [
+    {
+      id: 1,
+      name: 'Contact Form',
+      description: 'General contact form',
+      status: 'Published',
+      url: '/forms/contact',
+      icon: MessageSquare
+    },
+    {
+      id: 2,
+      name: 'Feedback Survey',
+      description: 'User feedback collection',
+      status: 'Published',
+      url: '/forms/feedback',
+      icon: ClipboardList
+    },
+    {
+      id: 3,
+      name: 'Support Request',
+      description: 'Technical support form',
+      status: 'Draft',
+      url: '/forms/support',
+      icon: Headphones
+    },
+    {
+      id: 4,
+      name: 'Feature Request',
+      description: 'New feature suggestions',
+      status: 'Published',
+      url: '/forms/feature-request',
+      icon: Lightbulb
+    }
+  ];
+
   const languages = [
     { value: 'en', label: 'English' },
     { value: 'es', label: 'Español' },
@@ -293,39 +413,173 @@ const SettingsDialog = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Preferences</h3>
-              <div className="space-y-4">
-                <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium">Theme</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select theme" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {publicThemes.map((theme) => (
-                        <SelectItem key={theme.value} value={theme.value}>
-                          {theme.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium">Font Size</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select font size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {fontSizes.map((size) => (
-                        <SelectItem key={size.value} value={size.value}>
-                          {size.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <h3 className="text-lg font-semibold mb-4">Public Notes</h3>
+              <p className="text-sm font-medium mb-4">Stats</p>
+                <div className='flex flex-row gap-5 w-full'>
+                 {publicStats.map((stat) => (
+                   <Card key={stat.id} className='shadow-none hover:bg-muted/70 w-full relative'>
+                     <CardContent className='flex flex-col items-start justify-center'>
+                       <span className='text-xs text-muted-foreground'>{stat.label}</span>
+                       <span className='text-2xl font-medium'>
+                         {stat.value}
+                       </span>
+                     </CardContent>
+                     <MiniLineChart 
+                       data={stat.chartData} 
+                       color={stat.color}
+                     />
+                   </Card>
+                 ))}
+               </div>
+
+               <div className="mt-10">
+                <p className="text-sm font-medium mb-2 mt-4">All notes and forms</p>
+                 <Tabs defaultValue="notes" className="w-full">
+                   <TabsList className="grid w-full grid-cols-2">
+                     <TabsTrigger value="notes">Published Notes</TabsTrigger>
+                     <TabsTrigger value="forms">Published Forms</TabsTrigger>
+                   </TabsList>
+
+                   <TabsContent value="notes" className="space-y-4">
+                     <div className="border rounded-lg">
+                       <div className="overflow-x-auto">
+                          <div className="bg-muted/50 border-b">
+                            <div className="grid grid-cols-4 gap-3 px-3 py-2 text-xs font-medium text-muted-foreground">
+                              <div>Name</div>
+                              <div>Status</div>
+                              <div>URL</div>
+                              <div>Actions</div>
+                            </div>
+                          </div>
+                          <div className="divide-y">
+                            {publishedNotes.map((note) => {
+                              const Icon = note.icon;
+                              return (
+                                <div key={note.id} className="grid grid-cols-4 gap-3 px-3 py-2 text-xs hover:bg-muted/30">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center">
+                                      <Icon className="w-3 h-3 text-blue-600" />
+                                    </div>
+                                    <span className="font-medium text-xs">{note.name}</span>
+                                  </div>
+                                 <div>
+                                   <Badge 
+                                     variant="outline" 
+                                     className={cn(
+                                       "text-xs px-1.5 py-0.5",
+                                       note.status === 'Published' ? "bg-green-50 text-green-700 border-green-200" : "bg-yellow-50 text-yellow-700 border-yellow-200"
+                                     )}
+                                   >
+                                     {note.status}
+                                   </Badge>
+                                 </div>
+                                 <div className="text-xs text-muted-foreground font-mono">
+                                   {note.url}
+                                 </div>
+                                 <div>
+                                   <DropdownMenu>
+                                     <DropdownMenuTrigger asChild>
+                                       <Button variant="ghost" className="h-5 w-5 p-0">
+                                         <span className="sr-only">Open menu</span>
+                                         <MoreHorizontal className="h-2.5 w-2.5" />
+                                       </Button>
+                                     </DropdownMenuTrigger>
+                                     <DropdownMenuContent align="start">
+                                       <DropdownMenuItem onClick={() => alert('View clicked')}>
+                                         <span className="text-xs">View</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Edit clicked')}>
+                                         <span className="text-xs">Edit</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Unpublish clicked')}>
+                                         <span className="text-xs">Unpublish</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Delete clicked')} className="">
+                                         <span className="text-xs text-red-600 hover:text-red-600">Delete</span>
+                                       </DropdownMenuItem>
+                                     </DropdownMenuContent>
+                                   </DropdownMenu>
+                                 </div>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     </div>
+                   </TabsContent>
+
+                   <TabsContent value="forms" className="space-y-4">
+                     <div className="border rounded-lg">
+                       <div className="overflow-x-auto">
+                          <div className="bg-muted/50 border-b">
+                            <div className="grid grid-cols-5 gap-3 px-3 py-2 text-xs font-medium text-muted-foreground">
+                              <div>Name</div>
+                              <div>Status</div>
+                              <div>URL</div>
+                              <div>Actions</div>
+                            </div>
+                          </div>
+                          <div className="divide-y">
+                            {publishedForms.map((form) => {
+                              const Icon = form.icon;
+                              return (
+                                <div key={form.id} className="grid grid-cols-4 gap-3 px-3 py-2 text-xs hover:bg-muted/30">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-green-100 rounded-md flex items-center justify-center">
+                                      <Icon className="w-3 h-3 text-green-600" />
+                                    </div>
+                                    <span className="font-medium text-xs">{form.name}</span>
+                                  </div>
+                                 <div>
+                                   <Badge 
+                                     variant="outline" 
+                                     className={cn(
+                                       "text-xs px-1.5 py-0.5",
+                                       form.status === 'Published' ? "bg-green-50 text-green-700 border-green-200" : "bg-yellow-50 text-yellow-700 border-yellow-200"
+                                     )}
+                                   >
+                                     {form.status}
+                                   </Badge>
+                                 </div>
+                                 <div className="text-xs text-muted-foreground font-mono">
+                                   {form.url}
+                                 </div>
+                                 <div>
+                                   <DropdownMenu>
+                                     <DropdownMenuTrigger asChild>
+                                       <Button variant="ghost" className="h-5 w-5 p-0">
+                                         <span className="sr-only">Open menu</span>
+                                         <MoreHorizontal className="h-2.5 w-2.5" />
+                                       </Button>
+                                     </DropdownMenuTrigger>
+                                     <DropdownMenuContent align="start">
+                                       <DropdownMenuItem onClick={() => alert('View clicked')}>
+                                         <span className="text-xs">View</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Edit clicked')}>
+                                         <span className="text-xs">Edit</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Responses clicked')}>
+                                         <span className="text-xs">View Responses</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Unpublish clicked')}>
+                                         <span className="text-xs">Unpublish</span>
+                                       </DropdownMenuItem>
+                                       <DropdownMenuItem onClick={() => alert('Delete clicked')} className="">
+                                         <span className="text-xs text-red-600 hover:text-red-600">Delete</span>
+                                       </DropdownMenuItem>
+                                     </DropdownMenuContent>
+                                   </DropdownMenu>
+                                 </div>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     </div>
+                   </TabsContent>
+                 </Tabs>
+               </div>
             </div>
           </div>
         );
@@ -801,7 +1055,7 @@ const SettingsDialog = () => {
             Settings
         </DropdownMenuItem>
       </DialogTrigger>
-      <DialogContent className="p-0 min-w-[1000px] h-[700px]">
+      <DialogContent className="p-0 min-w-[1200px] h-[700px]">
         <div className="flex h-full">
           <div className="w-64 border-r bg-muted/30">
             <div className="p-4 border-b">
